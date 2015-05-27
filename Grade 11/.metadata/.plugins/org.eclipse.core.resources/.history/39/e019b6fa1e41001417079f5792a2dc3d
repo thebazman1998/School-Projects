@@ -1,0 +1,107 @@
+import java.util.Scanner;
+
+public class Unit_1_Final_Assignment {
+
+	public static void main(String[] args){
+		
+		//Define Scanner
+		@SuppressWarnings("resource")
+		Scanner input = new Scanner(System.in);
+		
+		//Define variables to hold prices
+		double price = 0;
+		double tax = 0.13;
+		double total = 0;
+		double pay = 0;
+		double change = 0;
+		double remainder = 0;
+		double amount = 0;
+		
+		//Define variables to hold amount of coins
+		double num_five = 0;
+		double num_toonie = 0;
+		double num_loonie = 0;
+		double num_quarter = 0;
+		double num_dime = 0;
+		double num_knickel = 0;
+		double num_penny = 0;
+		
+		//Define variables for coins and set the value
+		double five = 5;
+		double toonie = 2;
+		double loonie = 1;
+		double quarter = 0.25;
+		double dime = 0.1;
+		double knickel = 0.05;
+		double penny = 0.01;
+		
+		System.out.println("What is the price of the item?");
+		price = input.nextDouble();
+		
+		System.out.println("What did the customer pay?");
+		pay = input.nextDouble();
+		
+		total = price + price * tax;
+		change = pay - total;
+		change = Math.round(change * 100);
+		change = change / 100;
+		remainder = change;
+		
+		if(remainder >= 5){
+			
+			amount = remainder - (remainder - (remainder % five));
+			remainder = remainder - (remainder % five);
+			num_five = (int)((change - remainder) / five);
+		}
+		
+		if(remainder >= 2){
+			
+			amount = remainder - (remainder - (remainder % toonie));
+			remainder = remainder - (remainder % toonie);
+			num_toonie = (int)((change - remainder) / toonie);
+			
+		}
+		
+		if(remainder >= 1){
+			amount = remainder - (remainder - (remainder % loonie));
+			remainder = remainder - (remainder % loonie);
+			num_loonie = (int)((change - amount) / loonie);
+		}
+		
+		if(remainder >= 0.25){
+			amount = remainder - (remainder - (remainder % quarter));
+			remainder = remainder - (remainder % quarter);
+			num_quarter = (int)((change - amount) / quarter);
+		}
+		
+		if(remainder >= 0.1){
+			amount = remainder - (remainder - (remainder % dime));
+			remainder = remainder - (remainder % dime);
+			num_dime = (int)((change - amount) / dime);
+		}
+		
+		if(remainder >= 0.05){
+			amount = remainder - (remainder - (remainder % knickel));
+			remainder = remainder - (remainder % knickel);
+			num_knickel = (int)((change - amount) / knickel);
+		}
+		
+		if(remainder >= 0.01){
+			amount = remainder - (penny * (remainder % penny));
+			remainder = remainder - (remainder % penny);
+			num_penny = (int)((change - amount) / penny);
+		}
+		
+		System.out.println("Total Price: " + total);
+		System.out.println("Payed: " + pay);
+		System.out.println("Change: " + change);
+		System.out.println("	Five $ Bills: " + num_five);
+		System.out.println("	Toonies: " + num_toonie);
+		System.out.println("	Loonies: " + num_loonie);
+		System.out.println("	Quarters: " + num_quarter);
+		System.out.println("	Dimes: " + num_dime);
+		System.out.println("	Knickels: " + num_knickel);
+		System.out.println("	Pennies: " + num_penny);
+		
+	}
+}

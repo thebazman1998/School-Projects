@@ -1,0 +1,1621 @@
+/*Michael Song
+ICS3U1 Summative: Left 2 Die
+June 16th 2013*/
+
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Rectangle;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.util.Random;
+
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.Timer;
+public class game_2p extends JPanel implements ActionListener, KeyListener {
+	boolean debug = false;
+	boolean pause = false;
+	boolean up1, down1, left1, right1 = false;
+	boolean up2, down2, left2, right2 = false;
+	static int x1, y1;
+	static int x2, y2;
+
+	Timer t = new Timer(10, this);
+	Timer endgame = new Timer(3000, new ActionListener(){
+		@Override
+		public void actionPerformed(ActionEvent arg0) {
+			// TODO Auto-generated method stub
+			Mover1Score += 1;
+			Mover2Score += 1;
+		}
+	});
+
+	//Hitbox for players
+	static Rectangle p1box = new Rectangle(x1, y1, 15, 15);
+	static Rectangle p2box = new Rectangle(x2, y2, 15, 15);
+
+	//Revive hitbox for players
+	static Rectangle p1boxrev = new Rectangle(x1 - 15, y1 - 15, 45, 45);
+	static Rectangle p2boxrev = new Rectangle(x2 - 15, y2 - 15, 45, 45);
+
+	//IMPORTED VARIABLES (NEEDS CLEANING)
+	int normalwave1height = 15;
+	int normalwave1width = 15;
+	Rectangle[] normalwave1 = { new Rectangle(1243, 234, normalwave1width, normalwave1height), new Rectangle(1050, 389, normalwave1width, normalwave1height), new Rectangle(1200, 389, normalwave1width, normalwave1height), new Rectangle(1300, 389, normalwave1width, normalwave1height), new Rectangle(1550, 389, normalwave1width, normalwave1height), new Rectangle(1550, 389, normalwave1width, normalwave1height), new Rectangle(1550, 389, normalwave1width, normalwave1height), new Rectangle(1550, 389, normalwave1width, normalwave1height), new Rectangle(1550, 389, normalwave1width, normalwave1height), new Rectangle(1550, 389, normalwave1width, normalwave1height), new Rectangle(1550, 389, normalwave1width, normalwave1height), new Rectangle(1550, 389, normalwave1width, normalwave1height), new Rectangle(1550, 389, normalwave1width, normalwave1height), new Rectangle(1550, 389, normalwave1width, normalwave1height), new Rectangle(1550, 389, normalwave1width, normalwave1height), new Rectangle(1550, 389, normalwave1width, normalwave1height), new Rectangle(1550, 389, normalwave1width, normalwave1height), new Rectangle(1550, 389, normalwave1width, normalwave1height) };
+
+	int normalwave2height = 10;
+	int normalwave2width = 10;
+	Rectangle[] normalwave2 = { new Rectangle(1337, 337, 20, 20), new Rectangle(1050, 389, 20, 20), new Rectangle(1200, 389, 20, 20), new Rectangle(1300, 389, 20, 20), new Rectangle(1550, 389, 20, 20) };
+	int normalwave2speed = 7;
+
+	//Enemy speed
+	int enemyspeed = 1;
+
+	//Allows program to keep track of wave number
+	int wave = 1;
+
+	//Keeps track of which player is dead
+	static boolean p1dead = false;
+	static boolean p2dead = false;
+	static //Player bleed out time
+	int p1bleedoutcode = 20;
+	static int p2bleedoutcode = 20;
+
+	//Random generator
+	Random rnd = new Random();
+	static int rndint;
+
+
+	//Distance enemies spawn from player, changes based on wave number
+	int intrandomspawn = 5000;
+
+
+	//Tells game if wave 2 enemies have spawned
+	int wave2spawned = 0;        
+	//Tells program which direction wave 2 enemies are rushing from
+	String wave2rushtype = "completed";
+	//Tells program when to initiate wave 2 rush
+	int wave2rush;
+	//Special eslchoose for wave 2
+	int eslchoose2; //1 = top, 2 = right, 3 = bottom, 4 = left
+
+
+	//Power-up rectangles
+	int powerupwidth = 20;
+	int powerupheight = 20;
+
+	Rectangle poweruprectangle1 = new Rectangle(1337, 1337, powerupwidth, powerupheight);
+	Rectangle poweruprectangle2 = new Rectangle(1337, 1337, powerupwidth, powerupheight);
+	Rectangle poweruprectangle3 = new Rectangle(1337, 1337, powerupwidth, powerupheight);
+	Rectangle poweruprectangle4 = new Rectangle(1337, 1337, powerupwidth, powerupheight);
+	Rectangle poweruprectangle5 = new Rectangle(1337, 1337, powerupwidth, powerupheight);
+	//Power-up rectangles time
+	int poweruprectangle1time = 2000;
+	int poweruprectangle2time = 2000;
+	int poweruprectangle3time = 2000;
+	int poweruprectangle4time = 2000;
+	int poweruprectangle5time = 2000;
+	//Power-up type
+	String powerup1type;
+	String powerup2type;
+	String powerup3type;
+	String powerup4type;
+	String powerup5type;
+	//Keeps track of random generator for power-ups
+	int powerup;
+	int poweruplocationx;
+	int poweruplocationy;
+	//Power-ups
+	static boolean nuke = false;
+	static boolean ice = false;
+	static boolean slow = false;
+
+	static int nukedown = 0, icedown = 0, slowdown = 0;
+
+	static //Times how long power-ups are active
+	int nuketime;
+	static int icetime;
+	static int slowtime;
+	//Background rectangle: Turns red on nuke
+	Rectangle nukeback = new Rectangle(0, 0, 1000, 750);
+
+
+	//Perks
+	static boolean quickrevive1 = false;
+	static boolean quickrevive2 = false;
+	boolean staminup1 = false;
+	boolean staminup2 = false;
+
+	//Perk boxes
+	Rectangle quickrevivebox = new Rectangle(200, 150, 120, 50);
+	Rectangle staminupbox = new Rectangle(650, 150, 120, 50);	
+
+
+	//Players score and money
+	int Mover1Score = 0;
+	int Mover2Score = 0;
+	int Mover1Money = 0;
+	int Mover2Money = 0;
+
+	//Total score for high score board
+	int MoverTotal = 0;
+
+	static JLabel lblMover1Score = new JLabel("0");
+	static JLabel lblMover2Score = new JLabel("0");
+	static JLabel lblMover1Money = new JLabel("0");
+	static JLabel lblMover2Money = new JLabel("0");
+
+	//Reviving players
+	static int ProgressMover1 = 0;
+	static int ProgressMover2 = 0;
+
+	boolean bleedout = false;
+
+	//Player speed
+	int Mover1Speed = 5;
+	int Mover2Speed = 5;
+
+
+
+	game_2p() {
+		addKeyListener(this);
+		setFocusable(true);
+		setFocusTraversalKeysEnabled(false);
+		x1 = 300;
+		y1 = 325;
+
+		x2 = 700;
+		y2 = 325;
+
+		if (debug == true)
+			System.out.println("Game Started");
+
+		high_score_RW_2p.loadScores();
+
+		//Sets location of players, enables checkertimer that controls most functions of the game
+		/*Mover1Panel.Location = new Point(200, 250);
+        Mover1Panel.Visible = true;
+        Mover2Panel.Location = new Point(300, 250);
+        Mover2Panel.Visible = true;
+        CheckerTimer.Enabled = true;*/
+
+		//Sets wave number to 1
+		wave = 1;
+
+
+		//Spawns the enemies for the first wave
+		//Random locations for enemy spawning
+		//Random Spawn Point
+		int eslchoose; //0 = top, 1 = right, 2 = bottom, 3 = left
+		int eslxright;
+		int eslxmiddle;
+		int eslxleft;
+		int eslytop;
+		int eslymiddle;
+		int eslybottom;
+		for (int i = 0; i < normalwave1.length; i++)
+		{
+			eslchoose = rnd.nextInt(4);
+			showRandomInteger(1050, intrandomspawn, rnd);
+			eslxright = rndint;
+			showRandomInteger(0, 1000, rnd);
+			eslxmiddle = rndint;
+			showRandomInteger(-intrandomspawn, -50, rnd);
+			eslxleft = rndint;
+			showRandomInteger(-intrandomspawn, -50, rnd);
+			eslytop = rndint;
+			showRandomInteger(0, 630, rnd);
+			eslymiddle = rndint;
+			showRandomInteger(680, intrandomspawn, rnd);
+			eslybottom = rndint;
+
+
+			if (eslchoose == 0) //Top spawn location
+			{
+				normalwave1[i].x = eslxmiddle;
+				normalwave1[i].y = eslytop;
+			}
+			else if (eslchoose == 1) //Right spawn location
+			{
+				normalwave1[i].x = eslxright;
+				normalwave1[i].y = eslymiddle;
+			}
+			else if (eslchoose == 2) //Bottom spawn location
+			{
+				normalwave1[i].x = eslxmiddle;
+				normalwave1[i].y = eslybottom;
+			}
+			else if (eslchoose == 3) //Left spawn location
+			{
+				normalwave1[i].x = eslxleft;
+				normalwave1[i].y = eslymiddle;
+			}
+		}
+	}
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		if (up1 == true && y1-Mover1Speed >= 0) {
+			y1-=Mover1Speed;
+		}
+		if (down1 == true && y1+Mover1Speed <= 625) {
+			y1+=Mover1Speed;
+		}
+		if (left1 == true && x1-Mover1Speed >= 0) {
+			x1-=Mover1Speed;
+		}
+		if (right1 == true && x1+Mover1Speed <= 970) {
+			x1+=Mover1Speed;
+		}
+
+
+		if (up2 == true && y2-Mover2Speed >= 0) {
+			y2-=Mover2Speed;
+		}
+		if (down2 == true && y2+Mover2Speed <= 625) {
+			y2+=Mover2Speed;
+		}
+		if (left2 == true && x2-Mover2Speed >= 0) {
+			x2-=Mover2Speed;
+		}
+		if (right2 == true && x2+Mover2Speed <= 970) {
+			x2+=Mover2Speed;
+		}
+
+
+		//Moves player hitboxes
+		p1box.x = x1;
+		p1box.y = y1;
+		p2box.x = x2;
+		p2box.y = y2;
+
+		p1boxrev.x = x1-15;
+		p1boxrev.y = y1-15;
+		p2boxrev.x = x2-15;
+		p2boxrev.y = y2-15;
+
+
+		//Determines speed of players based on whether they have stamin-up or not
+		if (staminup1 == true)
+		{ Mover1Speed = 6; }
+		else if (staminup1 == false)
+		{ Mover1Speed = 4; }
+		if (staminup2 == true)
+		{ Mover2Speed = 6; }
+		else if (staminup2 == false)
+		{ Mover2Speed = 4; }
+
+
+		//Determines how hard game is based on wave
+		if (Mover1Score >= 100 || Mover2Score >= 100)
+		{ wave = 5; intrandomspawn = 1750; normalwave2speed = 14; endgame.start();}
+		else if (Mover1Score >= 75 || Mover2Score >= 75)
+		{ wave = 4; intrandomspawn = 3000; normalwave2speed = 12; }
+		else if (Mover1Score >= 50 || Mover2Score >= 50)
+		{ wave = 3; intrandomspawn = 5000; normalwave2speed = 10; }
+		else if (Mover1Score >= 30 || Mover2Score >= 30)
+		{ wave = 2; intrandomspawn = 8000; normalwave2speed = 7; }
+		else if (Mover1Score >= 15 || Mover2Score >= 15)
+		{ wave = 1; intrandomspawn = 10000;}//aka nothing happens lol
+
+
+		//Random power-ups
+		//SUBJECT TO CHANGE: The frequency of powerups will change based on what wave the player is on
+		if (wave == 5){
+			//showRandomInteger(0, 6000, rnd);
+			powerup = 0;
+		}
+		else if (wave >= 2 && wave <=4){
+			showRandomInteger(0, 5000, rnd);
+			powerup = rndint;
+		}
+		else if (wave == 1){
+			showRandomInteger(0, 4000, rnd);
+			powerup = rndint;
+		}
+
+
+		//POWERUPS
+		//Places a power-up block randomly on the map if the random generator decides that it is time...for a power-up!
+		//There can be a maximum_num of 5 power-ups to be picked up at any time.
+		//The power-up block's co-ordinates are randomly generated and placed on the game.
+		//There are 3 types of power-ups, decided by the random generator.
+		//Power-up rectangles are stored at the co-ordinate (1337, 1337) when not in use.
+		if (powerup >= 100 && powerup <= 105)
+		{
+			showRandomInteger(10, 970, rnd);
+			poweruplocationx = rndint;
+			showRandomInteger(10, 700, rnd);
+			poweruplocationy = rndint;
+			if (poweruprectangle1.x == 1337 && poweruprectangle1.y == 1337)
+			{
+				poweruprectangle1time = 2000;
+				poweruprectangle1.x = poweruplocationx;
+				poweruprectangle1.y = poweruplocationy;
+				if (powerup == 100)
+				{
+					powerup1type = "nuke";
+				}
+				else if (powerup >= 101 && powerup <= 103)
+				{
+					powerup1type = "ice";
+				}
+				else if (powerup >= 104 && powerup <= 105)
+				{
+					powerup1type = "slow";
+				}
+			}
+			else if (poweruprectangle2.x == 1337 && poweruprectangle2.y == 1337)
+			{
+				poweruprectangle2time = 2000;
+				poweruprectangle2.x = poweruplocationx;
+				poweruprectangle2.y = poweruplocationy;
+				if (powerup == 100)
+				{
+					powerup2type = "nuke";
+				}
+				else if (powerup >= 101 && powerup <= 103)
+				{
+					powerup2type = "ice";
+				}
+				else if (powerup >= 104 && powerup <= 105)
+				{
+					powerup2type = "slow";
+				}
+			}
+			else if (poweruprectangle3.x == 1337 && poweruprectangle3.y == 1337)
+			{
+				poweruprectangle3time = 2000;
+				poweruprectangle3.x = poweruplocationx;
+				poweruprectangle3.y = poweruplocationy;
+				if (powerup == 100)
+				{
+					powerup3type = "nuke";
+				}
+				else if (powerup >= 101 && powerup <= 103)
+				{
+					powerup3type = "ice";
+				}
+				else if (powerup >= 104 && powerup <= 105)
+				{
+					powerup3type = "slow";
+				}
+			}
+			else if (poweruprectangle4.x == 1337 && poweruprectangle4.y == 1337)
+			{
+				poweruprectangle4time = 2000;
+				poweruprectangle4.x = poweruplocationx;
+				poweruprectangle4.y = poweruplocationy;
+				if (powerup == 100)
+				{
+					powerup4type = "nuke";
+				}
+				else if (powerup >= 101 && powerup <= 103)
+				{
+					powerup4type = "ice";
+				}
+				else if (powerup >= 104 && powerup <= 105)
+				{
+					powerup4type = "slow";
+				}
+			}
+			else if (poweruprectangle5.x == 1337 && poweruprectangle5.y == 1337)
+			{
+				poweruprectangle5time = 2000;
+				poweruprectangle5.x = poweruplocationx;
+				poweruprectangle5.y = poweruplocationy;
+				if (powerup == 100)
+				{
+					powerup5type = "nuke";
+				}
+				else if (powerup >= 101 && powerup <= 103)
+				{
+					powerup5type = "ice";
+				}
+				else if (powerup >= 104 && powerup <= 105)
+				{
+					powerup5type = "slow";
+				}
+			}
+		}
+		//Power ups stay on screen for 25 seconds before disappearing (it appears to be 20 seconds in code, but because the checkertimer handles so many other things, it is more like 25 seconds).
+		poweruprectangle1time -= 1;
+		poweruprectangle2time -= 1;
+		poweruprectangle3time -= 1;
+		poweruprectangle4time -= 1;
+		poweruprectangle5time -= 1;
+		//Power-ups disappear when their time reaches 0.
+		if (poweruprectangle1time <= 0)
+		{poweruprectangle1.x = 1337; poweruprectangle1.y = 1337;}
+		if (poweruprectangle2time <= 0)
+		{poweruprectangle2.x = 1337; poweruprectangle2.y = 1337;}
+		if (poweruprectangle3time <= 0)
+		{poweruprectangle3.x = 1337; poweruprectangle3.y = 1337;}
+		if (poweruprectangle4time <= 0)
+		{poweruprectangle4.x = 1337; poweruprectangle4.y = 1337;}
+		if (poweruprectangle5time <= 0)
+		{poweruprectangle5.x = 1337; poweruprectangle5.y = 1337;}
+
+		//If the player touches a power-up rectangle, the player is granted its abilities and the power-up rectangle is put away.
+		if (p1box.intersects(poweruprectangle1) || p2box.intersects(poweruprectangle1))
+		{
+			poweruprectangle1.x = 1337;
+			poweruprectangle1.y = 1337;
+			if (powerup1type == "nuke" && nuke == false)
+			{
+				//Gives each player 10 points and 5 money for a nuke, they will not get any other points from the nuke killing enemies.
+				Mover1Score += 10;
+				Mover2Score += 10;
+				Mover1Money += 5;
+				Mover2Money += 5;
+				nuke = true;
+				nuketime += 3;
+				nukedown += 60;
+			}
+			if (powerup1type == "ice")
+			{
+				//When ice is true, enemies cannot move and players can "smash" them.
+				ice = true;
+				icetime += 5;
+				icedown += 100;
+			}
+			if (powerup1type == "slow")
+			{
+				//Enemies move at half speed.
+				slow = true;
+				slowtime += 10;
+				slowdown += 200;
+			}
+		}
+		if (p1box.intersects(poweruprectangle2) || p2box.intersects(poweruprectangle2))
+		{
+			poweruprectangle2.x = 1337;
+			poweruprectangle2.y = 1337;
+			if (powerup2type == "nuke" && nuke == false)
+			{
+				Mover1Score += 10;
+				Mover2Score += 10;
+				Mover1Money += 5;
+				Mover2Money += 5;
+				nuke = true;
+				nuketime += 3;
+				nukedown += 60;
+			}
+			if (powerup2type == "ice")
+			{
+				ice = true;
+				icetime += 5;
+				icedown += 100;
+			}
+			if (powerup2type == "slow")
+			{
+				slow = true;
+				slowtime += 10;
+				slowdown += 200;
+			}
+		}
+		if (p1box.intersects(poweruprectangle3) || p2box.intersects(poweruprectangle3))
+		{
+			poweruprectangle3.x = 1337;
+			poweruprectangle3.y = 1337;
+			if (powerup3type == "nuke" && nuke == false)
+			{
+				Mover1Score += 10;
+				Mover2Score += 10;
+				Mover1Money += 5;
+				Mover2Money += 5;
+				nuke = true;
+				nuketime += 3;
+				nukedown += 60;
+			}
+			if (powerup3type == "ice")
+			{
+				ice = true;
+				icetime += 5;
+				icedown += 100;
+			}
+			if (powerup3type == "slow")
+			{
+				slow = true;
+				slowtime += 10;
+				slowdown += 200;
+			}
+		}
+		if (p1box.intersects(poweruprectangle4) || p2box.intersects(poweruprectangle4))
+		{
+			poweruprectangle4.x = 1337;
+			poweruprectangle4.y = 1337;
+			if (powerup4type == "nuke" && nuke == false)
+			{
+				Mover1Score += 10;
+				Mover2Score += 10;
+				Mover1Money += 5;
+				Mover2Money += 5;
+				nuke = true;
+				nuketime += 3;
+				nukedown += 60;
+			}
+			if (powerup4type == "ice")
+			{
+				ice = true;
+				icetime += 5;
+				icedown += 100;
+			}
+			if (powerup4type == "slow")
+			{
+				slow = true;
+				slowtime += 10;
+				slowdown += 200;
+			}
+		}
+		if (p1box.intersects(poweruprectangle5) || p2box.intersects(poweruprectangle5))
+		{
+			poweruprectangle5.x = 1337;
+			poweruprectangle5.y = 1337;
+			if (powerup5type == "nuke" && nuke == false)
+			{
+				Mover1Score += 10;
+				Mover2Score += 10;
+				Mover1Money += 5;
+				Mover2Money += 5;
+				nuke = true;
+				nuketime += 3;
+				nukedown += 60;
+			}
+			if (powerup5type == "ice")
+			{
+				ice = true;
+				icetime += 5;
+				icedown += 100;
+			}
+			if (powerup5type == "slow")
+			{
+				slow = true;
+				slowtime += 10;
+				slowdown += 200;
+			}
+		}
+
+
+		//SPECIAL ENEMIES
+		//Boolean tells game if wave 2 enemies have been spawned
+		boolean wave2finished = true;
+		for (int i = 0; i < normalwave2.length; i++)
+		{
+			if (wave2rushtype == "completed")
+			{
+				//Changes how often special enemies will rush the player depending on wave number
+				if (wave == 2)
+				{showRandomInteger(1, 20000, rnd);
+				wave2rush = rndint;}
+				else if (wave == 3)
+				{showRandomInteger(1, 15000, rnd);
+				wave2rush = rndint;}
+				else if (wave == 4)
+				{showRandomInteger(1, 10000, rnd);
+				wave2rush = rndint;}
+				else if (wave == 5)
+				{showRandomInteger(1, 5000, rnd);
+				wave2rush = rndint;}
+				else if (wave >= 6)
+				{ wave2rush = 2; }
+				showRandomInteger(1, 5, rnd);
+				eslchoose2 = rndint;
+			}
+			//Spawns enemies initially or if wave2rush is 2.
+			if ((wave>=2 && wave2spawned <= 5) || (wave2rush == 2))
+			{
+				//Random locations for enemy spawning
+				int eslxright;
+				int eslxmiddle;
+				int eslxleft;
+				int eslytop;
+				int eslymiddle;
+				int eslybottom;
+				//Marks wave2rush as 1 to prevent repeat spawning
+				wave2rush = 1;
+				//Gives players score + money if they kill enemies while they are frozen
+				if (normalwave2[i].intersects(p1box) && ice==true)
+				{
+					Mover1Score += 3;
+					Mover1Money += 3;
+				}
+				if (normalwave2[i].intersects(p2box) && ice==true)
+				{
+					Mover2Score += 3;
+					Mover2Money += 3;
+				}
+				//Special enemies spawn logic
+				showRandomInteger(1050, intrandomspawn, rnd);
+				eslxright = rndint;
+				showRandomInteger(0, 1000, rnd);
+				eslxmiddle = rndint;
+				showRandomInteger(-intrandomspawn, -50, rnd);
+				eslxleft = rndint;
+				showRandomInteger(-intrandomspawn, -50, rnd);
+				eslytop = rndint;
+				showRandomInteger(0, 630, rnd);
+				eslymiddle = rndint;
+				showRandomInteger(680, intrandomspawn, rnd);
+				eslybottom = rndint;
+				if (eslchoose2 == 1) //Top spawn location
+				{
+					normalwave2[i].x = eslxmiddle;
+					normalwave2[i].y = eslytop;
+					wave2rushtype = "topdown";
+				}
+				else if (eslchoose2 == 2) //Right spawn location
+				{
+					normalwave2[i].x = eslxright;
+					normalwave2[i].y = eslymiddle;
+					wave2rushtype = "rightleft";
+				}
+				else if (eslchoose2 == 3) //Bottom spawn location
+				{
+					normalwave2[i].x = eslxmiddle;
+					normalwave2[i].y = eslybottom;
+					wave2rushtype = "bottomup";
+				}
+				else if (eslchoose2 == 4) //Left spawn location
+				{
+					normalwave2[i].x = eslxleft;
+					normalwave2[i].y = eslymiddle;
+					wave2rushtype = "leftright";
+				}
+				//Game spawns 5 enemies
+				if (wave2spawned <= 5)
+				{
+					wave2spawned += 1;
+				}
+			}
+			//Moves wave 2 enemies
+			if (normalwave2[i].x <= 1020 && wave2rushtype == "leftright")
+			{
+				//Moves wave 2 enemies from left to right
+				//Enemies can only move if not frozen
+				if (ice == false)
+				{
+					//Slow does not affect special enemies
+					normalwave2[i].x += normalwave2speed;
+				}
+				//Marks boolean that tells program that enemies are not done rushing as false
+				wave2finished = false;
+				//Enemies are transported straight to the other side if there is a nuke or a player destroys them
+				if (normalwave2[i].intersects(nukeback) && nuke == true || normalwave2[i].intersects(p1box)|| normalwave2[i].intersects(p2box))
+				{
+					//Player is given 3 points if they kill an enemy while it is frozen, enemy is then transported to the other side
+					if (ice == true && normalwave2[i].intersects(p1box))
+					{ Mover1Score += 3; Mover1Money += 3; normalwave2[i].x = 1020; }
+					if (ice == true && normalwave2[i].intersects(p2box))
+					{ Mover2Score += 3; Mover2Money += 3; normalwave2[i].x = 1020; }
+					//If enemies are not frozen and hits a player, the player dies. Movement timers are marked as false to stop player movement and enemies continue on their path, making it possible to hit both players at once.
+					if (ice == false && normalwave2[i].intersects(p1box))
+					{
+						p1dead = true;
+						up1 = false;
+						down1 = false;
+						left1 = false;
+						right1 = false;
+					}
+					if (ice == false && normalwave2[i].intersects(p2box))
+					{
+						p2dead = true;
+						up2 = false;
+						down2 = false;
+						left2 = false;
+						right2 = false;
+					}
+					//Enemies go straight to the other side of the map if there is a nuke
+					if (normalwave2[i].intersects(nukeback) && nuke == true)
+					{ normalwave2[i].x = 1020; }
+				}
+			}
+			else if (normalwave2[i].x >= -20 && wave2rushtype == "rightleft")
+			{
+				if (ice == false)
+				{
+					normalwave2[i].x -= normalwave2speed;
+				}
+				wave2finished = false;
+				if (normalwave2[i].intersects(nukeback) && nuke == true || normalwave2[i].intersects(p1box) || normalwave2[i].intersects(p2box))
+				{
+					if (ice == true && normalwave2[i].intersects(p1box))
+					{ Mover1Score += 3; Mover1Money += 3; normalwave2[i].x = -21; }
+					else if (ice == true && normalwave2[i].intersects(p2box))
+					{ Mover2Score += 3; Mover2Money += 3; normalwave2[i].x = -21; }
+					else if (ice == false && normalwave2[i].intersects(p1box))
+					{
+						p1dead = true;
+						up1 = false;
+						down1 = false;
+						left1 = false;
+						right1 = false;
+					}
+					else if (ice == false && normalwave2[i].intersects(p2box))
+					{
+						p2dead = true;
+						up2 = false;
+						down2 = false;
+						left2 = false;
+						right2 = false;
+					}  
+					if (normalwave2[i].intersects(nukeback) && nuke == true)
+					{ normalwave2[i].x = -21; }
+				}
+			}
+			else if (normalwave2[i].y <= 660 && wave2rushtype == "topdown")
+			{
+				if (ice == false)
+				{
+					normalwave2[i].y += normalwave2speed;
+				} 
+				wave2finished = false;
+				if (normalwave2[i].intersects(nukeback) && nuke == true || normalwave2[i].intersects(p1box) || normalwave2[i].intersects(p2box))
+				{
+					if (ice == true && normalwave2[i].intersects(p1box))
+					{ Mover1Score += 3; Mover1Money += 3; normalwave2[i].y = 660; }
+					else if (ice == true && normalwave2[i].intersects(p2box))
+					{ Mover2Score += 3; Mover2Money += 3; normalwave2[i].y = 660; }
+					else if (ice == false && normalwave2[i].intersects(p1box))
+					{
+						p1dead = true;
+						up1 = false;
+						down1 = false;
+						left1 = false;
+						right1 = false;
+					}
+					else if (ice == false && normalwave2[i].intersects(p2box))
+					{
+						p2dead = true;
+						up2 = false;
+						down2 = false;
+						left2 = false;
+						right2 = false;
+					}
+					if (normalwave2[i].intersects(nukeback) && nuke == true)
+					{ normalwave2[i].y = 550; }
+				}
+			}
+			else if (normalwave2[i].y >= -20 && wave2rushtype == "bottomup")
+			{
+				if (ice == false)
+				{
+					normalwave2[i].y -= normalwave2speed;
+				}
+				wave2finished = false;
+				if (normalwave2[i].intersects(nukeback) && nuke == true || normalwave2[i].intersects(p1box) || normalwave2[i].intersects(p2box))
+				{
+					if (ice == true && normalwave2[i].intersects(p1box))
+					{ Mover1Score += 3; Mover1Money += 3; normalwave2[i].y = -21; }
+					else if (ice == true && normalwave2[i].intersects(p2box))
+					{ Mover2Score += 3; Mover2Money += 3; normalwave2[i].y = -21; }
+					else if (ice == false && normalwave2[i].intersects(p1box))
+					{
+						p1dead = true;
+						up1 = false;
+						down1 = false;
+						left1 = false;
+						right1 = false;
+					}
+					else if (ice == false && normalwave2[i].intersects(p2box))
+					{
+						p2dead = true;
+						up2 = false;
+						down2 = false;
+						left2 = false;
+						right2 = false;
+					}
+					if (normalwave2[i].intersects(nukeback) && nuke == true)
+					{ normalwave2[i].y = -21; }
+				}
+			}
+
+
+		}
+		//If the loop reports that all enemies have completed their attack, the program is informed that another attack can now occur.
+		if (wave2finished == true)
+		{
+			wave2rushtype = "completed";
+			//wave2spawned is 0 so enemies can be spawned again
+			wave2spawned = 0;
+		}
+
+		//REGULAR ENEMIES
+		//ENEMIES MOVING
+		int p1;
+		int p2;
+		//Enemy 1
+		for (int i = 0; i < normalwave1.length; i++)
+		{
+			//Decides which player enemy will follow,; Enemy will follow the closer player
+			p1 = Math.abs(x1 - normalwave1[i].x);
+			p1 = p1 + Math.abs(y1 - normalwave1[i].y);
+
+			p2 = Math.abs(x2 - normalwave1[i].x);
+			p2 = p2 + Math.abs(y2 - normalwave1[i].y);
+
+			//Stops movement if enemy hits another enemy. Prevents enemies from "going into" each other.
+			//Enemies have a virtual boundary around them 1 pixel larger than them, if it intersects with another enemy, the enemy is unable to move in that direction.
+			boolean canmover = true;
+			boolean canmovel = true;
+			boolean canmoveu = true;
+			boolean canmoved = true; 
+			for (int rr = 0; rr < normalwave1.length; rr++)
+			{
+				Rectangle LM = new Rectangle(normalwave1[rr].x - enemyspeed, normalwave1[rr].y, 1, normalwave1height);
+				if (LM.intersects(normalwave1[i]) && rr != i)
+				{ canmover = false; }
+			}
+			for (int rr = 0; rr < normalwave1.length; rr++)
+			{
+				Rectangle LM = new Rectangle(normalwave1[rr].x + normalwave1width + enemyspeed, normalwave1[rr].y, 1, normalwave1height);
+				if (LM.intersects(normalwave1[i]) && rr != i)
+				{ canmovel = false; }
+			}
+			for (int rr = 0; rr < normalwave1.length; rr++)
+			{
+				Rectangle LM = new Rectangle(normalwave1[rr].x, normalwave1[rr].y - enemyspeed, normalwave1width, 1);
+				if (LM.intersects(normalwave1[i]) && rr != i)
+				{ canmoved = false; }
+			}
+			for (int rr = 0; rr < normalwave1.length; rr++)
+			{
+				Rectangle LM = new Rectangle(normalwave1[rr].x, normalwave1[rr].y + normalwave1height + enemyspeed, normalwave1width, 1);
+				if (LM.intersects(normalwave1[i]) && rr != i)
+				{ canmoveu = false; }
+			}
+			//Determines enemy speed
+			if (slow == true)
+			{ enemyspeed = 1; }
+			else if (slow == false)
+			{ enemyspeed = 2; }
+			if ((p2 < p1 && p2dead == false && ice==false) || (p1dead == true && p2dead == false && ice == false))
+			{
+				//Enemy follows player 2 if player 2 is closer or player 1 is dead
+				//X Axis
+				if (x2 > normalwave1[i].x + enemyspeed - 1 && canmover == true)
+				{
+					normalwave1[i].x += enemyspeed;
+				}
+				else if (x2 < normalwave1[i].x - enemyspeed + 1 && canmovel == true)
+				{
+					normalwave1[i].x -= enemyspeed;
+				}
+				//Y Axis
+				if (y2 > normalwave1[i].y + enemyspeed - 1 && canmoved == true)
+				{
+					normalwave1[i].y += enemyspeed;
+				}
+				else if (y2 < normalwave1[i].y - enemyspeed + 1 && canmoveu == true)
+				{
+					normalwave1[i].y -= enemyspeed;
+				}
+			}
+			else if (p1dead == false && ice == false)
+			{
+				//Enemy follows player 1 if player 1 is closer or player 2 is dead
+				//X Axis
+				if (x1 > normalwave1[i].x + enemyspeed - 1 && canmover == true)
+				{
+					normalwave1[i].x += enemyspeed;
+				}
+				else if (x1 < normalwave1[i].x - enemyspeed + 1 && canmovel == true)
+				{
+					normalwave1[i].x -= enemyspeed;
+				}
+				//Y Axis
+				if (y1 > normalwave1[i].y + enemyspeed - 1 && canmoved == true)
+				{
+					normalwave1[i].y += enemyspeed;
+				}
+				else if (y1 < normalwave1[i].y - enemyspeed + 1 && canmoveu == true)
+				{
+					normalwave1[i].y -= enemyspeed;
+				}
+			}
+			//Kills player if player intersects with an enemy and enemies aren't frozen
+			if (normalwave1[i].intersects(p1box) && ice==false)
+			{
+				p1dead = true;
+				up1 = false;
+				down1 = false;
+				left1 = false;
+				right1 = false;
+				if (debug == true)
+					System.out.println("p1 is dead!");
+			}
+			if (normalwave1[i].intersects(p2box) && ice==false)
+			{
+				p2dead = true;
+				up2 = false;
+				down2 = false;
+				left2 = false;
+				right2 = false;
+				if (debug == true)
+					System.out.println("p2 is dead!");
+			}
+			//Kills enemy if player intersects with an enemy and enemies are frozen or if enemy hits the nuke
+			if ((normalwave1[i].intersects(p1box) && ice == true) || (normalwave1[i].intersects(p2box) && ice == true) || (normalwave1[i].intersects(nukeback) && nuke == true))
+			{
+				if (normalwave1[i].intersects(p1box)&&ice==true)
+				{
+					Mover1Score += 1;
+					Mover1Money += 1;
+				}
+				if (normalwave1[i].intersects(p2box)&&ice==true)
+				{
+					Mover2Score += 1;
+					Mover2Money += 1;
+				}
+				//Random locations for enemy spawning
+				//Random Spawn Point
+				int eslchoose; //0 = top, 1 = right, 2 = bottom, 3 = left
+				int eslxright;
+				int eslxmiddle;
+				int eslxleft;
+				int eslytop;
+				int eslymiddle;
+				int eslybottom;
+
+				eslchoose = rnd.nextInt(4);
+				showRandomInteger(1050, intrandomspawn, rnd);
+				eslxright = rndint;
+				showRandomInteger(0, 1000, rnd);
+				eslxmiddle = rndint;
+				showRandomInteger(-intrandomspawn, -50, rnd);
+				eslxleft = rndint;
+				showRandomInteger(-intrandomspawn, -50, rnd);
+				eslytop = rndint;
+				showRandomInteger(0, 630, rnd);
+				eslymiddle = rndint;
+				showRandomInteger(680, intrandomspawn, rnd);
+				eslybottom = rndint;
+
+
+				if (eslchoose == 0) //Top spawn location
+				{
+					normalwave1[i].x = eslxmiddle;
+					normalwave1[i].y = eslytop;
+				}
+				else if (eslchoose == 1) //Right spawn location
+				{
+					normalwave1[i].x = eslxright;
+					normalwave1[i].y = eslymiddle;
+				}
+				else if (eslchoose == 2) //Bottom spawn location
+				{
+					normalwave1[i].x = eslxmiddle;
+					normalwave1[i].y = eslybottom;
+				}
+				else if (eslchoose == 3) //Left spawn location
+				{
+					normalwave1[i].x = eslxleft;
+					normalwave1[i].y = eslymiddle;
+				}
+
+			}
+
+
+			//Reviving and players dead text
+			//Starts player 1 bleedout and tells player 2 to revive player 1 if only player 1 is dead.
+			if ((p1dead == true) && (p2dead == false))
+			{
+				//p1deadtext.Visible = true;
+				//p1bleedout.Visible = true;
+				bleedout = true;
+				quickrevive1 = false;
+				staminup1 = false;
+			}
+			//Makes player 1 dead text invisible if player 1 is alive or both players are dead
+			if ((p1dead == false) || ((p1dead == true) && (p2dead == true)))
+			{
+				/*p1deadtext.Visible = false;
+                p1bleedout.Visible = false;*/
+			}
+			//Starts player 2 bleedout and tells player 1 to revive player 2 if only player 2 is dead.
+			if ((p2dead == true) && (p1dead == false))
+			{
+				//p2deadtext.Visible = true;
+				//p2bleedout.Visible = true;
+				bleedout = true;
+				quickrevive2 = false;
+				staminup2 = false;
+			}
+			//Makes player 2 dead text invisible if player 2 is alive or both players are dead
+			if ((p2dead == false) || ((p1dead == true) && (p2dead == true)))
+			{
+				//p2deadtext.Visible = false;
+				//p2bleedout.Visible = false;
+			}
+
+			//GAME ENDING CODE; Ends game if both players are dead or if a player bleeds out
+			if (p1dead == true && p2dead == true && wave >= 1 || p1bleedoutcode == 0 && wave >= 1 && !p1box.intersects(p2box) || p2bleedoutcode == 0 && wave >= 1 && !p1box.intersects(p2box))
+			{
+				MoverTotal = Mover1Score + Mover2Score;
+				endgame.stop();
+				//Sets wave as 0 to prevent event from repeating, disables all timers
+				wave = 0;
+				up1 = false;
+				down1 = false;
+				left1 = false;
+				right1 = false;
+				up2 = false;
+				down2 = false;
+				left2 = false;
+				right2 = false;
+				/*CheckerTimer.Enabled = false;
+                secondtimer.Enabled = false;
+                quickreviveHUD1.Visible = false;
+                quickreviveHUD2.Visible = false;
+                staminupHUD1.Visible = false;
+                staminupHUD2.Visible = false;*/
+
+				//Shows a message box informing the user that the game is over, then closes game window.
+				if (p1dead == true && p2dead == true)
+				{ 
+					if(high_score_RW_2p.isHighScore(MoverTotal)){
+						high_score_RW_2p.inputScore(JOptionPane.showInputDialog(this, "What are your names?", "High Score of " + MoverTotal + "! Both players have died!", JOptionPane.PLAIN_MESSAGE), MoverTotal, Mover1Score, Mover2Score);
+						new high_score_2p().setVisible(true);
+						System.out.println("new high score");
+					}
+					else{
+						JOptionPane.showMessageDialog(null, "Game Over, both players have died! Your total score was " + MoverTotal + ".");
+						new high_score_2p().show();
+					}
+					System.out.println("Game over! Both players have died!");
+				}
+				else if (p1bleedoutcode == 0)
+				{ 
+					if(high_score_RW_2p.isHighScore(MoverTotal)){
+						high_score_RW_2p.inputScore(JOptionPane.showInputDialog(this,  "What are your names?", "High Score of " + MoverTotal + "! Player 1 has bled out!", JOptionPane.PLAIN_MESSAGE), MoverTotal, Mover1Score, Mover2Score);
+						new high_score_2p().show();
+					}
+					else{
+						JOptionPane.showMessageDialog(null, "Game Over, Player 1 has bled out! Your total score was " + MoverTotal + ".");
+						new high_score_2p().show();
+					}
+					System.out.println("Game over! Player 1 has bled out! No one gets left behind!");
+				}
+				else if (p2bleedoutcode == 0)
+				{ 
+					if(high_score_RW_2p.isHighScore(MoverTotal)){
+						high_score_RW_2p.inputScore(JOptionPane.showInputDialog(this,  "What are your names?", "High Score of " + MoverTotal + "! Player 2 has bled out!", JOptionPane.PLAIN_MESSAGE), MoverTotal, Mover1Score, Mover2Score);
+						new high_score_2p().show();
+					}
+					else{
+						JOptionPane.showMessageDialog(null, "Game Over, Player 2 has bled out! Your total score was " + MoverTotal + ".");
+						new high_score_2p().show();
+					}
+					System.out.println("Game over! Player 2 has bled out! No one gets left behind!");
+				}
+				t.stop();
+
+			}
+		}
+		repaint();
+	}
+	
+
+
+	public void paintComponent(Graphics g) {
+		super.paintComponent(g);
+
+		//Draws perk boxes
+		Color qrbox = new Color(0, 0, 128);
+		g.setColor(qrbox);
+		g.fillRect(200, 150, 120, 50);
+
+		Color subox = new Color(255, 192, 37);
+		g.setColor(subox);
+		g.fillRect(650, 150, 120, 50);
+
+		g.setColor(Color.gray);
+		g.drawString("Quick Revive (10)", 210, 177);
+		g.drawString("Stamin-Up (15)", 670, 177);
+
+
+		//PAINTS ENEMIES
+		//Paints normal wave 1 enemy
+		if (ice == false)
+		{
+			for (int i = 0; i < normalwave1.length; i++)
+			{
+				g.setColor(Color.green);
+				g.fillRect(normalwave1[i].x, normalwave1[i].y, normalwave1width, normalwave1height);
+			}
+		}
+		//Changes colour if frozen
+		else if (ice == true)
+		{
+			for (int i = 0; i < normalwave1.length; i++)
+			{
+				Color frozen = new Color(0, 197, 205);
+				g.setColor(frozen);
+				//g.setColor(Color.cyan);
+				g.fillRect(normalwave1[i].x, normalwave1[i].y, normalwave1width, normalwave1height);
+			}
+		}
+		//Paints special enemies
+		if (ice == false)
+		{
+			for (int i = 0; i < normalwave2.length; i++)
+			{
+				g.setColor(Color.red);
+				g.fillRect(normalwave2[i].x, normalwave2[i].y, normalwave2width, normalwave2height);
+			}
+		}
+		//Changes colour if frozen
+		else if (ice == true)
+		{
+			for (int i = 0; i < normalwave2.length; i++)
+			{
+				g.setColor(Color.magenta);
+				g.fillRect(normalwave2[i].x, normalwave2[i].y, normalwave2width, normalwave2height);
+			}
+		}
+
+
+		//PAINTS NUKE BACKGROUND
+		//Also acts as hit detection; Enemies die if they hit it and nuke is true
+		if (nuke == true){ 
+			//g.setColor(Color.red);
+			//g.fillRect(nukeback.x, nukeback.y, 984, 712); 
+			//getRootPane().setBackground(Color.red);
+			setBackground(Color.red);
+		}
+		else if (nuke == false){
+			//g.setColor(Color.gray);
+			setBackground(Color.white);
+		}
+
+
+		//PAINT POWER-UP RECTANGLES
+		//FLASH WHEN UNDER 5 SECONDS
+		if (poweruprectangle1time > 500 || poweruprectangle1time > 400 && poweruprectangle1time < 470 || poweruprectangle1time > 300 && poweruprectangle1time < 370 || poweruprectangle1time > 200 && poweruprectangle1time < 270 || poweruprectangle1time > 100 && poweruprectangle1time < 170 || poweruprectangle1time > 0 && poweruprectangle1time < 70)
+		{
+			if (powerup1type == "nuke"){ 
+				g.setColor(Color.red);
+				g.fillRect(poweruprectangle1.x, poweruprectangle1.y, powerupwidth, powerupheight); 
+			}
+			else if (powerup1type == "ice"){ 
+				g.setColor(Color.cyan);
+				g.fillRect(poweruprectangle1.x, poweruprectangle1.y, powerupwidth, powerupheight); 
+			}
+			else if (powerup1type == "slow"){
+				g.setColor(Color.black);
+				g.fillRect(poweruprectangle1.x, poweruprectangle1.y, powerupwidth, powerupheight); 
+			}
+		}
+		if (poweruprectangle2time > 500 || poweruprectangle2time > 400 && poweruprectangle2time < 470 || poweruprectangle2time > 300 && poweruprectangle2time < 370 || poweruprectangle2time > 200 && poweruprectangle2time < 270 || poweruprectangle2time > 100 && poweruprectangle2time < 170 || poweruprectangle2time > 0 && poweruprectangle2time < 70)
+		{
+			if (powerup2type == "nuke"){ 
+				g.setColor(Color.red);
+				g.fillRect(poweruprectangle2.x, poweruprectangle2.y, powerupwidth, powerupheight); 
+			}
+			else if (powerup2type == "ice"){ 
+				g.setColor(Color.cyan);
+				g.fillRect(poweruprectangle2.x, poweruprectangle2.y, powerupwidth, powerupheight); 
+			}
+			else if (powerup2type == "slow"){
+				g.setColor(Color.black);
+				g.fillRect(poweruprectangle2.x, poweruprectangle2.y, powerupwidth, powerupheight); 
+			}
+		}
+		if (poweruprectangle3time > 500 || poweruprectangle3time > 400 && poweruprectangle3time < 470 || poweruprectangle3time > 300 && poweruprectangle3time < 370 || poweruprectangle3time > 200 && poweruprectangle3time < 270 || poweruprectangle3time > 100 && poweruprectangle3time < 170 || poweruprectangle3time > 0 && poweruprectangle3time < 70)
+		{
+			if (powerup3type == "nuke"){ 
+				g.setColor(Color.red);
+				g.fillRect(poweruprectangle3.x, poweruprectangle3.y, powerupwidth, powerupheight); 
+			}
+			else if (powerup3type == "ice"){ 
+				g.setColor(Color.cyan);
+				g.fillRect(poweruprectangle3.x, poweruprectangle3.y, powerupwidth, powerupheight); 
+			}
+			else if (powerup3type == "slow"){
+				g.setColor(Color.black);
+				g.fillRect(poweruprectangle3.x, poweruprectangle3.y, powerupwidth, powerupheight); 
+			}
+		}
+		if (poweruprectangle4time > 500 || poweruprectangle4time > 400 && poweruprectangle4time < 470 || poweruprectangle4time > 300 && poweruprectangle4time < 370 || poweruprectangle4time > 200 && poweruprectangle4time < 270 || poweruprectangle4time > 100 && poweruprectangle4time < 170 || poweruprectangle4time > 0 && poweruprectangle4time < 70)
+		{
+			if (powerup4type == "nuke"){ 
+				g.setColor(Color.red);
+				g.fillRect(poweruprectangle4.x, poweruprectangle4.y, powerupwidth, powerupheight); 
+			}
+			else if (powerup4type == "ice"){ 
+				g.setColor(Color.cyan);
+				g.fillRect(poweruprectangle4.x, poweruprectangle4.y, powerupwidth, powerupheight); 
+			}
+			else if (powerup4type == "slow"){
+				g.setColor(Color.black);
+				g.fillRect(poweruprectangle4.x, poweruprectangle4.y, powerupwidth, powerupheight); 
+			}
+		}
+		if (poweruprectangle5time > 500 || poweruprectangle5time > 400 && poweruprectangle5time < 470 || poweruprectangle5time > 300 && poweruprectangle5time < 370 || poweruprectangle5time > 200 && poweruprectangle5time < 270 || poweruprectangle5time > 100 && poweruprectangle5time < 170 || poweruprectangle5time > 0 && poweruprectangle5time < 70)
+		{
+			if (powerup5type == "nuke"){ 
+				g.setColor(Color.red);
+				g.fillRect(poweruprectangle5.x, poweruprectangle5.y, powerupwidth, powerupheight); 
+			}
+			else if (powerup5type == "ice"){ 
+				g.setColor(Color.cyan);
+				g.fillRect(poweruprectangle5.x, poweruprectangle5.y, powerupwidth, powerupheight); 
+			}
+			else if (powerup5type == "slow"){
+				g.setColor(Color.black);
+				g.fillRect(poweruprectangle5.x, poweruprectangle5.y, powerupwidth, powerupheight); 
+			}
+		}
+
+
+		//HUD
+		g.setColor(Color.black);
+		g.fillRect(0, 640, 1000, 650);
+
+		g.setColor(Color.lightGray);
+		g.fillRect(0, 650, 1000, 712);
+		
+		
+		//HUD Perks
+		//P1
+		if (quickrevive1 == true){
+			g.setColor(qrbox);
+			g.fillRect(0, 640, 246, 10);
+		}
+		if (staminup1 == true){
+			g.setColor(subox);
+			g.fillRect(246, 640, 246, 10);
+		}
+
+		//P2
+		if (quickrevive2 == true){
+			g.setColor(qrbox);
+			g.fillRect(492, 640, 246, 10);
+		}
+		if (staminup2 == true){
+			g.setColor(subox);
+			g.fillRect(738, 640, 246, 10);
+		}
+
+		//Accurate baseline for length
+		/*g.setColor(Color.red);
+				g.fillRect(410, 655, 200, 10);*/
+		g.setColor(Color.red);
+		g.fillRect(410, 655, nukedown, 10);
+		g.setColor(Color.cyan);
+		g.fillRect(410, 675, icedown, 10);
+		g.setColor(Color.black);
+		g.fillRect(410, 695, slowdown, 10);
+		
+		//HUD to prevent bar from overflowing
+		g.setColor(Color.lightGray);
+		g.fillRect(610, 650, 984, 712);
+
+		//More HUD elements; Player score and money
+		g.setColor(Color.BLACK);
+		g.drawString("Player 1 Score: " + String.valueOf(Mover1Score), 10, 670);
+		g.drawString("Player 1 Money: " + String.valueOf(Mover1Money), 10, 700);
+
+		g.drawString("Player 2 Score: " + String.valueOf(Mover2Score), 862, 670);
+		g.drawString("Player 2 Money: " + String.valueOf(Mover2Money), 859, 700);
+
+		if (p1dead == true && p2dead == false){
+			Color p1blood = new Color(255, 178, 102);
+			g.setColor(p1blood);
+			g.fillOval(x1 - 15, y1 - 15, 45, 45);
+			g.setColor(Color.black);
+			g.drawString("Player 1 Bleed Out Time: " + String.valueOf(p1bleedoutcode), 150, 680);
+		}
+		else if (p1dead == false && p2dead == true){
+			Color p2blood = new Color(51, 51, 225);
+			g.setColor(p2blood);
+			g.fillOval(x2 - 15, y2 - 15, 45, 45);
+			g.setColor(Color.black);
+			g.drawString("Player 2 Bleed Out Time: " + String.valueOf(p2bleedoutcode), 650, 680);
+		}
+		else if (p1dead == true && p2dead == true){
+			Color p1blood = new Color(255, 178, 102);
+			g.setColor(p1blood);
+			g.fillOval(x1 - 15, y1 - 15, 45, 45);
+			Color p2blood = new Color(51, 51, 225);
+			g.setColor(p2blood);
+			g.fillOval(x2 - 15, y2 - 15, 45, 45);
+		}
+
+
+		//Power up GUI
+		g.setColor(Color.black);
+		g.drawString("Nuke: " + String.valueOf(nuketime), 360, 665);
+		g.drawString("Ice:  " + String.valueOf(icetime), 360, 685);
+		g.drawString("Slow: " + String.valueOf(slowtime), 360, 705);
+		/*g.drawString("Nuke: " + String.valueOf(nuketime), 480, 665);
+		g.drawString("Ice:  " + String.valueOf(icetime), 480, 685);
+		g.drawString("Slow: " + String.valueOf(slowtime), 480, 705);*/
+
+
+
+		//Paints players
+		g.setColor(Color.orange);
+		g.fillOval(x1, y1, 15, 15);
+
+		g.setColor(Color.blue);
+		g.fillOval(x2, y2, 15, 15);
+
+
+		//Player revive bar
+		g.setColor(Color.orange);
+		g.fillRect(x1, y1 - 20, ProgressMover1, 5);
+
+		g.setColor(Color.blue);
+		g.fillRect(x2, y2 - 20, ProgressMover2, 5);
+
+
+		repaint();
+
+	}
+
+	public static void main(String[] args) {
+
+
+		JFrame f = new JFrame("Left 2 Die Co-op Survival");
+		f.setSize(1000, 700);
+		f.setLocationRelativeTo(null);
+		game_2p m = new game_2p();
+
+		//totalGUI.add(f);
+
+		//Adding HUD
+		f.add(lblMover1Score);
+
+		f.add(m);
+
+		//lblMover1Score.setBackground(new Color);
+
+		lblMover1Score.setLocation(27, 20);
+
+		f.setSize(1000, 750);
+		
+		f.setResizable(false);
+
+		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+
+
+		f.setVisible(true);
+
+		m.t.start();
+
+		//BOOKMARK
+
+		Timer second = new Timer(1000,new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				//Ticks every second, deducts a second from the power-up's time every tick
+				if (nuketime > 0)
+				{ nuketime -= 1; nukedown -= 20;}
+				else if (nuketime <= 0)
+				{ nuke = false; nukedown = 0;}
+				if (icetime > 0)
+				{ icetime -= 1; icedown -= 20;}
+				else if (icetime <= 0)
+				{ ice = false; icedown = 0;}
+				if (slowtime > 0)
+				{ slowtime -= 1; slowdown -= 20;}
+				else if (slowtime <= 0)
+				{ slow = false; slowdown = 0; }
+
+				//Deducts a second from the bleed out time every tick
+				if (p1dead == true && p1bleedoutcode > 0)
+				{
+					p1bleedoutcode -= 1;
+				}
+				else if (p2dead == true && p2bleedoutcode > 0)
+				{
+					p2bleedoutcode -= 1;
+				}
+			}
+		});
+		second.start();
+
+
+		Timer bleeddown = new Timer(50,new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				//Reviving player 1
+				//Starts progress timer if player 2 intersects with player 1 and player 1 is dead
+				if ((p1dead == true) && (p2dead == false) && (p1boxrev.intersects(p2box)) && quickrevive2 == false)
+				{
+					ProgressMover1 += 1;
+				}
+				else if ((p1dead == true) && (p2dead == false) && (p1boxrev.intersects(p2box)) && quickrevive2 == true)
+				{
+					ProgressMover1 += 2;
+				}
+				//Resets revive progress to 0 if player 2 stops reviving
+				else if (p1dead == true && p2dead == false)
+				{
+					ProgressMover1 = 0;
+				}
+				//Player gets revived if revive bar is filled up
+				if (ProgressMover1 >= 15)
+				{
+					p1dead = false;
+					ProgressMover1 = 0;
+					p1bleedoutcode = 20;
+				}
+				//Reviving player 2
+				if ((p2dead == true) && (p1dead == false) && (p1box.intersects(p2boxrev))  && quickrevive1 == false)
+				{
+					ProgressMover2 += 1;
+				}
+				else if ((p2dead == true) && (p1dead == false) && (p1box.intersects(p2boxrev))  && quickrevive1 == true)
+				{
+					ProgressMover2 += 2;
+				}
+				else if (p2dead == true && p1dead == false)
+				{
+					ProgressMover2 = 0;
+				}
+				if (ProgressMover2 >= 15)
+				{
+					p2dead = false;
+					ProgressMover2 = 0;
+					p2bleedoutcode = 20;
+				}
+			}
+		});
+		bleeddown.start();
+	}
+
+
+	@Override
+	public void keyPressed(KeyEvent e) {
+		// TODO Auto-generated method stub
+		int code = e.getKeyCode();
+		if (p2dead == false && pause == false){
+			if (code ==  KeyEvent.VK_UP)
+			{
+				up2 = true;
+				if (debug == true)
+					System.out.println("up2");
+			}
+			if (code ==  KeyEvent.VK_DOWN)
+			{
+				down2 = true;
+				if (debug == true)
+					System.out.println("down2");
+			}
+			if (code ==  KeyEvent.VK_LEFT)
+			{
+				left2 = true;
+				if (debug == true)
+					System.out.println("left2");
+			}
+			if (code ==  KeyEvent.VK_RIGHT)
+			{
+				right2 = true;
+				if (debug == true)
+					System.out.println("right2");
+			}
+		}
+
+
+		if (p1dead == false && pause == false){
+			if (code == 87){
+				up1 = true;
+				if (debug == true)
+					System.out.println("up1");
+
+			}
+			if (code == 83){
+				down1 = true;
+				if (debug == true)
+					System.out.println("down1");
+			}
+			if (code == 65){
+				left1 = true;
+				if (debug == true)
+					System.out.println("left1");
+			}
+			if (code == 68){
+				right1 = true;
+				if (debug == true)
+					System.out.println("right1");
+			}
+		}
+
+
+
+		//BUYING PERKS
+		//Players have to press the appropriate key, be touching the appropriate perk box, must have enough money and cannot already have the perk to buy a perk.
+		//Player 1
+		if (p1dead == false && pause == false)
+		{
+			if (code == 32 && p1box.intersects(quickrevivebox) && Mover1Money >= 10 && quickrevive1 == false)
+			{
+				Mover1Money -= 10;
+				quickrevive1 = true;
+			}
+			else if (code == 32 && p1box.intersects(staminupbox) && Mover1Money >= 15 && staminup1 == false)
+			{
+				Mover1Money -= 15;
+				staminup1 = true;
+			}
+		}
+		if (p2dead == false && pause == false)
+		{
+			//Player 2
+			if (code == KeyEvent.VK_ENTER && p2box.intersects(quickrevivebox) && Mover2Money >= 10 && quickrevive2 == false)
+			{
+				Mover2Money -= 10;
+				quickrevive2 = true;
+			}
+			else if (code == KeyEvent.VK_ENTER && p2box.intersects(staminupbox) && Mover2Money >= 15 && staminup2 == false)
+			{
+				Mover2Money -= 15;
+				staminup2 = true;
+			}
+		}
+	}
+
+	@Override
+	public void keyReleased(KeyEvent e) {
+		// TODO Auto-generated method stub
+		int code = e.getKeyCode();
+		if (code == 87){
+			up1 = false;
+		}
+		if (code == 83){
+			down1 = false;
+		}
+		if (code == 65){
+			left1 = false;
+		}
+		if (code == 68){
+			right1 = false;
+		}
+
+
+		if (code ==  KeyEvent.VK_UP)
+		{
+			up2 = false;
+		}
+		if (code ==  KeyEvent.VK_DOWN)
+		{
+			down2 = false;
+		}
+		if (code ==  KeyEvent.VK_LEFT)
+		{
+			left2 = false;
+		}
+		if (code ==  KeyEvent.VK_RIGHT)
+		{
+			right2 = false;
+		}
+	}
+
+	@Override
+	public void keyTyped(KeyEvent e) {
+		// TODO Auto-generated method stub
+
+	}
+
+
+	//Random Generator
+	private static void showRandomInteger(int aStart, int aEnd, Random aRandom){
+		if ( aStart > aEnd ) {
+			throw new IllegalArgumentException("Start cannot exceed End.");
+		}
+		//get the range, casting to long to avoid overflow problems
+		long range = (long)aEnd - (long)aStart + 1;
+		// compute a fraction of the range, 0 <= frac < range
+		long fraction = (long)(range * aRandom.nextDouble());
+		rndint =  (int)(fraction + aStart);    
+		//log("Generated : " + randomNumber);
+	}
+}
+
+

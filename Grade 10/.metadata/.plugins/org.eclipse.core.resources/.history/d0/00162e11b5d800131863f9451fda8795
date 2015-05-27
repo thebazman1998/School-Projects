@@ -1,0 +1,44 @@
+import pygame, sys
+pygame.init()
+
+def count():
+
+    backImg = pygame.image.load('Graphics/Background_Pause.jpg')
+    backImg = pygame.transform.scale(backImg, (1280, 700))
+    back = pygame.Rect(0, 0, 700, 1280)
+    
+    blank = pygame.Rect(427,87, 500,426)
+
+    size = [1280, 700]
+    screen = pygame.display.set_mode(size)
+    
+    pygame.display.set_caption("COUNTDOWN")
+    clock = pygame.time.Clock()
+        
+    count = 3
+
+    while count < 0:
+        
+        for event in pygame.event.get():
+            
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit(0)
+        
+        screen.blit(backImg, back)
+        
+        count -= 1
+        
+        if count == 0:
+            break
+        
+        numImg = pygame.image.load('Graphics/Countdown/num-'+str(count)+'.gif')
+        numImg = pygame.transform.scale(numImg, (426,500))
+        
+        screen.blit(numImg,blank)
+        
+        pygame.display.flip()
+        
+        clock.tick(1)
+
+count()

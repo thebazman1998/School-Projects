@@ -1,0 +1,27 @@
+import java.util.Scanner;
+
+/*
+ * @author:			Basil
+ * Date Created:	2014-10-03
+ * Last Update: 	2014-10-03
+ */
+
+public class NameReversal {
+	
+	public static void main(String args[]) {
+		
+		Scanner input = new Scanner(System.in);
+		String name = "";
+		int i = 0;
+		
+		System.out.println("What is your name?");
+		
+		name = input.nextLine();
+		i = name.length();
+		System.out.println(i);
+		
+		for(i = name.length(); i == 0; i--) {
+			System.out.println(name.substring(i, i));
+		}
+	}
+}

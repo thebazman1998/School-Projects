@@ -1,0 +1,19 @@
+
+public class encryption {
+	
+	public static void main(String args[]) {
+		
+		int selector;
+		String encrypt;
+		String decrypt;
+		String encrypted;
+		String decrypted;
+		
+		encrypt = "hello";
+		
+		if(decrypt == null) {
+			
+			System.out.println("GG");
+		}
+	}
+}

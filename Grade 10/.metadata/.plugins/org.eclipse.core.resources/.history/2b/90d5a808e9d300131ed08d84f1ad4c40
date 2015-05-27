@@ -1,0 +1,17 @@
+'''
+Created on May 4, 2014
+
+@author: Basil
+'''
+
+import pygame
+
+pygame.init()
+
+screen = pygame.display.set_mode([700, 800])
+
+crouch = pygame.image.load('Graphics>tmp-2.gif')
+
+screen.fill((0, 0, 0))
+
+screen.blit(crouch, (0, 0, 100, 100))

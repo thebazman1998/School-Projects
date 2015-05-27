@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<launchConfiguration type="org.python.pydev.debug.regularLaunchConfigurationType">
+<booleanAttribute key="org.eclipse.debug.core.capture_output" value="true"/>
+<stringAttribute key="org.eclipse.ui.externaltools.ATTR_LOCATION" value="C:\Users\Basil\Dropbox\CompSci Programs\Bp_U2_Test\Bp_U2_Test_V1.py"/>
+<stringAttribute key="org.eclipse.ui.externaltools.ATTR_TOOL_ARGUMENTS" value=""/>
+<stringAttribute key="org.eclipse.ui.externaltools.ATTR_WORKING_DIRECTORY" value="C:\Users\Basil\Dropbox\CompSci Programs\Bp_U2_Test"/>
+<stringAttribute key="org.python.pydev.debug.ATTR_INTERPRETER" value="__default"/>
+<stringAttribute key="org.python.pydev.debug.ATTR_PROJECT" value="Bp_U3_Assignment1"/>
+<intAttribute key="org.python.pydev.debug.ATTR_RESOURCE_TYPE" value="1"/>
+<stringAttribute key="process_factory_id" value="org.python.pydev.debug.processfactory.PyProcessFactory"/>
+</launchConfiguration>

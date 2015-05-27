@@ -1,0 +1,159 @@
+/*
+ * @author: Basil
+ * Date Created: 2014-10-09
+ * Last Update: 2014-10-09
+ */
+
+import java.util.Scanner; //Import Scanner utility
+
+public class Unit2ProgrammingAssignment {
+	
+	public static void main(String args[]) { //Main method - Used to choose the method to run
+		
+		@SuppressWarnings("resource")
+		Scanner input = new Scanner(System.in); //Define Scanner variable
+		
+		System.out.println("This is a game where you must try and guess a random "
+				+ "number (chosen by the computer) between 1 and 100.\n"
+				+ "If your guess is below the number,\nit will say too low, if higher, "
+				+ "too high.\nWould you like to play? Type 0 for no, or 1-3 to play "
+				+ "the respective level.");
+		
+		//Menu Switch
+		switch(input.nextInt()) {
+		
+		case 0: //Quit
+			break;
+			
+		case 1: //Run the first game option
+			level2();
+			break;
+		
+		case 2:
+			level3(); //Run second option
+			break;
+		
+		case 3:
+			level4(); //Run third option
+			break;
+		}
+	}
+	
+	static void level2() { //First game option method
+		
+		@SuppressWarnings("resource")
+		Scanner input = new Scanner(System.in); //Define Scanner variable for method
+		
+		int answer = (int)(Math.random()* (100 - 1) + 1); //Random integer between 1 & 100
+		int guess = -1;
+		
+		while(guess != answer) { //Game loop
+			
+			System.out.println("Take a guess");
+			guess = input.nextInt();
+			
+			if (guess < answer) {
+				
+				System.out.println("Too low!");
+			}
+			
+			else if(guess > answer) {
+				
+				System.out.println("Too High!");
+			}
+		}
+		
+		System.out.println("Correct!"); //Runs when you guess correctly
+	}
+	
+	static void level3() { //Second game option loop
+		
+		
+		@SuppressWarnings("resource")
+		Scanner input = new Scanner(System.in);
+		int num_guess = 0;
+		
+		System.out.println("What is the smallest number?");
+		int range1 = input.nextInt();
+		
+		System.out.println("What is the biggest number?");
+		int range2 = input.nextInt();
+		
+		int answer = (int)((Math.random() * (range2 - range1)) + 1);
+		int guess = -1;
+		
+		while(guess != answer) {
+			
+			System.out.println("Take a guess");
+			guess = input.nextInt();
+			
+			if (guess < answer) {
+				
+				System.out.println("Too low!");
+			}
+			
+			else if(guess > answer) {
+				
+				System.out.println("Too High!");
+			}
+			
+			num_guess++;
+		}
+		
+		System.out.println("Correct! It took you " + num_guess + " guess(es)");
+	}
+	
+static void level4() {
+		
+		@SuppressWarnings("resource")
+		Scanner input = new Scanner(System.in);
+		int num_guess = 0;
+		
+		System.out.println("What is the maximum # of guesses?");
+		int max_guess = input.nextInt();
+		
+		System.out.println("What is the smallest number?");
+		int range1 = input.nextInt();
+		
+		System.out.println("What is the biggest number?");
+		int range2 = input.nextInt();
+		
+		int answer = (int)((Math.random() * (range2 - range1)) + 1);
+		int guess = -1;
+		
+		long time1 = System.currentTimeMillis();
+		
+		while(guess != answer && num_guess < max_guess) {
+			
+			System.out.println("Take a guess");
+			guess = input.nextInt();
+			
+			if (guess < answer) {
+				
+				System.out.println("Too low!");
+			}
+			
+			else if(guess > answer) {
+				
+				System.out.println("Too High!");
+			}
+			
+			num_guess++;
+		}
+		
+		long time2 = System.currentTimeMillis();
+		
+		int count = (int) ((time2 - time1) / 1000);
+		int score = count * 100;
+		
+		if(guess == answer) {
+			
+			System.out.println("Correct! It took you " + num_guess + " guess(es), and " + count + " seconds. "
+					+ "You scored " + score + "points.");
+		}
+		else {
+			
+			System.out.println("You lost.");
+		}
+	}
+}

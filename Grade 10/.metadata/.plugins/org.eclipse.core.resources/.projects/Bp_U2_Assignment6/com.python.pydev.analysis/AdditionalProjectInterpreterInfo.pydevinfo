@@ -1,0 +1,21 @@
+-- VERSION_4
+-- START DISKCACHE
+C:\Users\Basil\Dropbox\CompSci Programs\.metadata\.plugins\org.eclipse.core.resources\.projects\Bp_U2_Assignment6\com.python.pydev.analysis\v2_indexcache
+Bp_U2_Assignment6_V1|1397598525177|C:\Users\Basil\Dropbox\CompSci Programs\Bp_U2_Assignment6\Bp_U2_Assignment6_V1.py
+-- END DISKCACHE
+-- START DICTIONARY
+1
+1=Bp_U2_Assignment6_V1
+-- END DICTIONARY
+-- START TREE 1
+6
+clo|1|clock!11@
+don|1|done!11@
+dra|5|draw_house!10@draw_background!10@draw_cloud!10@draw_tree!10@draw_onscreen!10@
+ran|1|randcolors!10@
+scr|1|screen!11@
+siz|1|size!11@
+-- END TREE
+-- START TREE 2
+0
+-- END TREE

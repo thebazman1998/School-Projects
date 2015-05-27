@@ -1,0 +1,53 @@
+import java.util.Scanner;
+import java.util.Random;
+
+public class Unit2ProgrammingAssignment {
+	
+	public static void main(String args[]) {
+		
+		Scanner input = new Scanner(System.in);
+		int menu_choice = 0;
+		
+		System.out.println("This is a game where you must try and guess a random "
+				+ "number (chosen by the computer) between 1 and 100. "
+				+ "If your guess is below the number, it will say too low, if higher, "
+				+ "too high. Would you like to play? Type 1 for yes, 0 for no.");
+		
+		switch(input.nextInt()) {
+		
+		case 0:
+			break;
+			
+		case 1:
+			
+			level2();
+			break;
+		}
+	}
+	
+	static void level2() {
+		
+		Scanner input = new Scanner(System.in);
+		
+		Random rand = new Random();
+		int answer = rand.nextInt(100);
+		int guess = -1;
+		
+		while(guess != answer) {
+			
+			guess = input.nextInt();
+			
+			if (guess < answer) {
+				
+				System.out.println("Too low!");
+			}
+			
+			else if(guess > answer) {
+				
+				System.out.println("Too High!");
+			}
+		}
+		
+		System.out.println("Correct!");
+	}
+}

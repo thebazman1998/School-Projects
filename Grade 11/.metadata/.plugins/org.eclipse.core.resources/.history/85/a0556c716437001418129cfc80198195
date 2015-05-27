@@ -1,0 +1,13 @@
+
+public class Tester {
+	
+	public static void main(String[] args){
+		
+		int p1q1 = 79 + 3 * (4 + 82 - 68) + 19 - 7;
+		int p1q2 = (179 + 21 + 10) / 7 + 181; 
+		
+		System.out.println("79 + 3 * (4 + 82 - 68) - 7 + 19 = " + p1q1);
+		System.out.println("(179 +21 +10) / 7 + 181" + p1q2);
+	}
+
+}

@@ -1,0 +1,193 @@
+/* Student    : Basil Pocklington
+ * Date       : 2014-09-20
+ * Description: This program takes inputs price of item and amount payed, and outputs the change that should be given.
+ */
+import java.util.Scanner;
+
+public class Unit_1_Final_Assignment {
+
+	public static void main(String[] args){
+		
+		//Define Scanner
+		@SuppressWarnings("resource")
+		Scanner input = new Scanner(System.in);
+		
+		//Define the constant value of TAX
+		final double TAX = 1.13;
+		
+		//Define variables to hold prices
+		double price = 0;
+		double price_w_tax = 0;
+		double total = 0;
+		double pay = 0;
+		double change = 0;
+		double remainder = 0;
+		double amount = 0;
+		
+		//Define variables to hold amount of money
+		double num_five = 0;
+		double num_toonie = 0;
+		double num_loonie = 0;
+		double num_quarter = 0;
+		double num_dime = 0;
+		double num_knickel = 0;
+		double num_penny = 0;
+		
+		//Define constants for money and set the value
+		final double five = 5;
+		final double toonie = 2;
+		final double loonie = 1;
+		final double quarter = 0.25;
+		final double dime = 0.1;
+		final double knickel = 0.05;
+		final double penny = 0.01;
+		
+		//Define variables for string versions of doubles
+		String priceStr = "";
+		String totalStr = "";
+		String payStr = "";
+		String changeStr = "";
+		String price_w_taxStr = "";
+		String fiveStr = "";
+		String toonieStr = "";
+		String loonieStr = "";
+		String quarterStr = "";
+		String dimeStr = "";
+		String knickelStr = "";
+		String pennyStr = "";
+		
+		System.out.println("What is the price of the item?");
+		price = input.nextDouble();
+		
+		System.out.println("What did the customer pay?");
+		pay = input.nextDouble();
+		
+		total = price * TAX;
+		total = Math.round(total * 100);
+		total = total / 100.00;
+		change = pay - total;
+		change = Math.round(change * 100);
+		change = change / 100.00;
+		remainder = change;
+		price_w_tax = (price * TAX) - price;
+		price_w_tax = Math.round(price_w_tax * 100);
+		price_w_tax = price_w_tax / 100;
+		
+		if(remainder >= 5){
+			
+			amount = (remainder % five);
+			remainder = remainder - (remainder % five);
+			num_five = (int)((remainder) / five);
+			remainder = amount;
+		}
+		
+		if(remainder >= 2){
+			
+			amount = (remainder % toonie);
+			remainder = remainder - (remainder % toonie);
+			num_toonie = (int)((remainder) / toonie);
+			remainder = amount;
+			
+		}
+		
+		if(remainder >= 1){
+			amount = (remainder % loonie);
+			remainder = remainder - (remainder % loonie);
+			num_loonie = (int)((remainder) / loonie);
+			remainder = amount;
+		}
+		
+		if(remainder >= 0.25){
+			amount = (remainder % quarter);
+			remainder = remainder - (remainder % quarter);
+			num_quarter = (int)((remainder) / quarter);
+			remainder = amount;
+		}
+		
+		if(remainder >= 0.1){
+			amount = (remainder % dime);
+			remainder = remainder - (remainder % dime);
+			num_dime = (int)((remainder) / dime);
+			remainder = amount;
+		}
+		
+		if(remainder >= 0.05){
+			amount = (remainder % knickel);
+			remainder = remainder - (remainder % knickel);
+			num_knickel = (int)((remainder) / knickel);
+			remainder = amount;
+		}
+		
+		if(remainder >= 0.01){
+			amount = (remainder % penny);
+			remainder = remainder - (remainder % penny);
+			num_penny = (int)((remainder) / penny);
+			remainder = amount;
+		}
+		
+		priceStr = String.valueOf(price);
+		totalStr = String.valueOf(total);
+		payStr = String.valueOf(pay);
+		changeStr = String.valueOf(change);
+		price_w_taxStr = String.valueOf(price_w_tax);
+		fiveStr = String.valueOf(num_five);
+		toonieStr = String.valueOf(num_toonie);
+		loonieStr = String.valueOf(num_loonie);
+		quarterStr = String.valueOf(num_quarter);
+		dimeStr = String.valueOf(num_dime);
+		knickelStr = String.valueOf(num_knickel);
+		pennyStr = String.valueOf(num_penny);
+		
+		if(priceStr.indexOf(".") < 3){
+			
+			priceStr = priceStr + "0";
+			
+		}
+		
+		if(totalStr.indexOf(".") < 3){
+			
+			totalStr = totalStr + "0";
+			
+		}
+		
+		if(payStr.indexOf(".") < 3){
+			
+			payStr = payStr + "0";
+			
+		}
+		
+		if(changeStr.indexOf(".") < 3){
+			
+			changeStr = changeStr + "0";
+			
+		}
+		
+		if(price_w_taxStr.indexOf(".") < 3){
+			
+			price_w_taxStr = price_w_taxStr + "0";
+			
+		}
+			
+		fiveStr = fiveStr.substring(0, fiveStr.length() - 2);	
+		toonieStr = toonieStr.substring(0, toonieStr.length() - 2);	
+		loonieStr = loonieStr.substring(0, loonieStr.length() - 2);	
+		quarterStr = quarterStr.substring(0, quarterStr.length() - 2);
+		dimeStr = dimeStr.substring(0, dimeStr.length() - 2);	
+		knickelStr = knickelStr.substring(0, knickelStr.length() - 2);	
+		pennyStr = pennyStr.substring(0, pennyStr.length() - 2);
+		
+		System.out.println("Item Price: " + priceStr);
+		System.out.println("Tax Price: " + price_w_taxStr);
+		System.out.println("Total Price: " + totalStr);
+		System.out.println("Paid: " + payStr);
+		System.out.println("Change: " + changeStr);
+		System.out.println("	Five Dollar Bills: " + fiveStr);
+		System.out.println("	Toonies: " + toonieStr);
+		System.out.println("	Loonies: " + loonieStr);
+		System.out.println("	Quarters: " + quarterStr);
+		System.out.println("	Dimes: " + dimeStr);
+		System.out.println("	Knickels: " + knickelStr);
+		System.out.println("	Pennies: " + pennyStr);
+		
+	}
+}

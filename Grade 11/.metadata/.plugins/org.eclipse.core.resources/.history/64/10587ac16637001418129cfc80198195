@@ -1,0 +1,33 @@
+
+public class Tester {
+	
+	public static void main(String[] args){
+		part1();
+		part2();
+	}
+	
+	public static void part1(){
+		
+		int p1q1 = 79 + 3 * (4 + 82 - 68) + 19 - 7;
+		int p1q2 = (179 + 21 + 10) / 7 + 181; 
+		int p1q3 = 10389 * 56 * 11 + 2246;
+		
+		System.out.println("79 + 3 * (4 + 82 - 68) - 7 + 19 = " + p1q1);
+		System.out.println("(179 +21 +10) / 7 + 181 = " + p1q2);
+		System.out.println("10389 * 56 * 11 + 2246 = " + p1q3);
+	}
+	
+	public static void part2(){
+		double meal_cost = 8.95;
+		double tax = meal_cost * 0.13;
+		double total_cost = meal_cost + tax;
+		
+		tax = Math.round((tax * 100) / 100.0)
+		
+		System.out.println();
+		System.out.println("Bill:     " + meal_cost);
+		System.out.println("HST:      " + tax);
+		System.out.println("Total:    " + total_cost);
+	}
+
+}

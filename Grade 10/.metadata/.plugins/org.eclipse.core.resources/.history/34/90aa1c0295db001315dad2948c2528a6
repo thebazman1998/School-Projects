@@ -1,0 +1,112 @@
+'''
+Created on May 14, 2014
+
+@author: Basil
+'''
+
+def menu():
+    choice = raw_input("Which program would you like to run? 1-13, 'end' to quit\n>> ")
+    if choice == '1':
+        question1()
+        menu()
+        
+    elif choice == '2':
+        question2()
+        menu()
+        
+    elif choice == '3':
+        question3()
+        menu()
+        
+    elif choice == '4':
+        question4()
+        menu()
+        
+    elif choice == '5':
+        question5()
+        menu()
+        
+    elif choice == '6':
+        question6()
+        menu()
+    
+    elif choice == '7':
+        question7()
+        menu()
+    
+    elif choice == '8':
+        question8()
+        menu()
+    
+    elif choice == '9':
+        question9()
+        menu()
+    
+    elif choice == '10':
+        question10()
+        menu()
+    
+    elif choice == '11':
+        question11()
+        menu()
+    
+    elif choice == '12':
+        question12()
+        menu()
+    
+    elif choice == '13':
+        question13()
+        menu()
+    
+    else:
+        menu()
+
+def question1():
+    for i in range(0, 3):
+        text = raw_input('Please enter a word\n>> ')
+        print text.center(50)
+        print text.rjust(50)
+
+def question2():
+    text = raw_input('Please enter a word, type end to quit\n>> ')
+    if len(text) % 2 == 0: # If length of text is an even number
+        text_middle = text[(len(text)/2) - 1 : (len(text)/2) + 1]
+        
+    elif len(text) % 2 != 0: # If length of text is an odd number
+        text_middle = text[len(text)/2]
+    
+    print text_middle
+
+def question3():
+    pass
+
+def question4():
+    pass
+
+def question5():
+    pass
+
+def question6():
+    pass
+
+def question7():
+    pass
+
+def question8():
+    pass
+
+def question9():
+    pass
+
+def question10():
+    pass
+
+def question11():
+    pass
+
+def question12():
+    pass
+
+def question13():
+    pass
+menu()

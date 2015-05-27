@@ -1,0 +1,25 @@
+
+public class Even_Fibonacci_Numbers {
+	
+	public static void main(String args[]) {
+		
+		int i = 1;
+		int i_old = 0;
+		int i_old2 = 0;
+		int sum = -1;
+		
+		for (i = 1; i <= 3999999; i = i_old + i_old2){
+			System.out.println(i);
+			if (i % 2 == 0) {
+				
+				sum += i;
+				//System.out.println(sum);
+			}
+			
+			i_old2 = i_old;
+			i_old = i;
+		}
+		
+		System.out.println(sum);
+	}
+}

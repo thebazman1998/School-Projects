@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Delete resource &apos;Bp_Final_Exam/Bp_Final_Exam_V1.py&apos;" deleteContents="false" description="Delete resource &apos;Bp_Final_Exam/Bp_Final_Exam_V1.py&apos;" element1="/Bp_Final_Exam/Bp_Final_Exam_V1.py" flags="7" id="org.eclipse.ltk.core.refactoring.delete.resources" resources="1" stamp="1403614708183"/>
+</session>

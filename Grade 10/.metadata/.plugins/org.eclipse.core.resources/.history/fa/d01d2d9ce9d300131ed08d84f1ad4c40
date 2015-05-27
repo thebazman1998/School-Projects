@@ -1,0 +1,25 @@
+'''
+Created on May 4, 2014
+
+@author: Basil
+'''
+
+import pygame, sys
+
+pygame.init()
+
+screen = pygame.display.set_mode([700, 400])
+
+crouch = pygame.image.load('Graphics/Cvs Asuka Crouch Right/tmp-2.gif')
+
+screen.fill((0, 0, 0))
+
+screen.blit(crouch, (0, 0, 100, 100))
+
+done = False
+
+while not done:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            pygame.quit()
+            sys.exit(0)

@@ -1,0 +1,33 @@
+/*
+ * @author: Basil
+ * Date Created: 2014-10-06
+ * Last Updated: 2014-10-06
+ */
+
+import java.awt.*;
+import javax.swing.*;
+
+class ButtonFrame extends JFrame {
+	
+	JButton bChange;
+	
+	ButtonFrame(String title) {
+		super(title);
+		setLayout(new FlowLayout());
+		
+		bChange = new JButton("Click Me!");
+		add(bChange);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	}
+}
+
+public class Unit2Assignment {
+	
+	public static void main(String args[]) {
+		
+		ButtonFrame frm = new ButtonFrame("Button Demo");
+		
+		frm.setSize(500, 250);
+		frm.setVisible(true);
+	}
+}

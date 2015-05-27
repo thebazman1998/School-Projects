@@ -1,0 +1,61 @@
+'''
+Created on Apr 29, 2014
+
+@author: Basil
+'''
+
+def menu():
+    menu_choice = raw_input('Would you like to view the Communication, Application, or Thinking section?\n>> ')
+    menu_choice = menu_choice.lower()
+    
+    if menu_choice == 'communication':
+        communication()
+        
+    elif menu_choice == 'application':
+        application()
+    
+    elif menu_choice == 'thinking':
+        thinking()
+        
+def communication():
+    print 'Explain the types of loops available in python. Give an example of each.'
+    print '    While loop: loops the piece of code until the logic is false.'
+    print '        If not sure when loop is going to end, or if waiting for user input (such as in a game) a while loop would be appropriate.'
+    print '    For loop: loops the piece of code a certain amount.'
+    print '        If the loop is going to run a predetermined amount of times, like when using a counter, a for loop is appropriate.'
+    menu()
+
+def application():
+    x = input('Which question would you like to view (1-4)?\n>> ')
+    if x == 1:
+        max_min_set = False
+        total = 0
+        num = 0
+        for i in range(0, 20):
+            num = float(input('Please enter a decimal.\n>> '))
+            
+            total += num
+            
+            if max_min_set == False:
+                min = num
+                max = num
+            
+            if num > max:
+                num = max
+            
+            if num < min:
+                num = min
+        
+        avg = total / 20.0
+        
+        print 'The sum is:', total
+        print 'The average is:', avg
+        print 'The maximum is:', max
+        print 'The minimum is:', min
+                
+
+def thinking():
+    pass
+
+#Main
+menu()

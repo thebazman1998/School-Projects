@@ -1,0 +1,65 @@
+import java.io.*;
+
+public class DataTweaker {
+	
+	public static void main(String args[]) throws IOException {
+		
+		// Declare local variables
+		byte[] buffer;
+		FileInputStream stream;
+		int n;
+		int lines;
+		
+		// Initialize local variables
+		stream = new FileInputStream("Data.txt");
+		System.out.println(stream.toString());
+		buffer = new byte[8192];
+		lines = 0;
+		
+		// Detect how long the file is, in lines
+		while ((n = stream.read(buffer)) > 0)
+		{
+		    for (int i = 0; i < n; i++) // Cycle through all characters in the file
+		    {
+		    	if (buffer[i] == '\n') // Every time a line break occurs,
+		    	{
+		    		lines++; // Increment lines variable
+		    	}
+		    }
+		}
+		
+		double array[] = new double[lines];
+		
+		// Close Scanner object
+		stream.close();
+		
+		
+		System.out.println("Reading File from Java code");
+	    //Name of the file
+	    String fileName="Data.txt";
+	    try{
+
+	    //Create object of FileReader
+	    FileReader inputFile = new FileReader(fileName);
+
+	    double line;
+	    
+	    //Instantiate the BufferedReader Class
+	    BufferedReader bufferReader = new BufferedReader(inputFile);
+
+	    // Read file line by line and print on the console
+	    int i = 0;
+	    while ((line = Double.parseDouble(bufferReader.readLine())) != Double.parseDouble("")) {
+	            array[i] = line;
+	            ++i;
+	    }
+	    //Close the buffer reader
+	    bufferReader.close();
+	    }catch(Exception e){}
+	    
+	    for(int a = 0; a < lines; a++) {
+	    	
+	    	System.out.println(array[a]);
+	    }
+	}
+}

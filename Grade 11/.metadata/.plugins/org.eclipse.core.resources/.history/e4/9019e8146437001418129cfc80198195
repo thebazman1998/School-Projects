@@ -1,0 +1,11 @@
+
+public class Tester {
+	
+	public static void main(String[] args){
+		
+		double p1q1 = 79 + 19 * (4 + 82 - 68) + 3 - 7;
+		
+		System.out.println("79 + 3 * (4 + 82 - 68) - 7 + 19 = " + p1q1);
+	}
+
+}

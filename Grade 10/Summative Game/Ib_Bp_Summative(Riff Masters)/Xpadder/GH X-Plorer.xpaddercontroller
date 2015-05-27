@@ -1,0 +1,46 @@
+;------------------------
+; Xpadder Controller File
+;------------------------
+
+Version=5.7
+
+[Button Locations]
+Button1Location=16,96
+Button2Location=46,96
+Button3Location=105,98
+Button4Location=77,97
+Button5Location=136,96
+Button7Location=371,100
+Button8Location=406,100
+DPadUpLocation=219,67
+DPadRightLocation=251,99
+DPadDownLocation=219,131
+DPadLeftLocation=187,99
+TriggerLeftLocation=4,4
+TriggerRightLocation=478,4
+
+[Access]
+DPadUpAccess=POV
+DPadRightAccess=POV
+DPadDownAccess=POV
+DPadLeftAccess=POV
+TriggerLeftAccess=Axis RZ
+TriggerRightAccess=Slider 1
+
+[Names]
+Button1Name=Green
+Button2Name=Red
+Button3Name=Blue
+Button4Name=Yellow
+Button5Name=Orange
+Button7Name=Back
+Button8Name=Start
+DPadName=DPad
+DPadUpName=Up
+DPadRightName=Right
+DPadDownName=Down
+DPadLeftName=Left
+TriggerLeftName=Trigger Left
+TriggerRightName=Trigger Right
+
+[Image]

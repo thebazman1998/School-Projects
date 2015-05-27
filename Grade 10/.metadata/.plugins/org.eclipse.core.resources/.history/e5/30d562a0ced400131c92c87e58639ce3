@@ -1,0 +1,151 @@
+'''
+Created on May 5, 2014
+
+@author: Basil
+'''
+            if (player.left+player.right)/2 > (player2.right+player2.left)/2:        # P1 face right, P2 face left
+                if player2.bottom >= 700:
+                    if jump2Count > 20 and jump2Count < 28:
+                        jump2Count += 1
+                        player2Image = pygame.image.load('Graphics/Cvs Jin Jump/tmp-'+ str(jumpCount/2) + '.gif')
+                        player2Image = pygame.transform.flip(player2Image,1,0)
+                    else:
+                        jump2Count = 3
+                    if not(move2Left or move2Right or punch2 or kick2):
+                        if not(crouching2):
+                            crouch2Count = 0
+                            player2Image = pygame.image.load('Graphics/Cvs Jin Idle Stance/tmp-'+ str(idleCount/5) + '.gif')
+                            player2Image = pygame.transform.flip(player2Image,1,0)
+                            if idle2Count != 36*5:
+                                idle2Count += 1
+                            else:
+                                idle2Count = 0
+                        else:
+                            player2Image = pygame.image.load('Graphics/Cvs Jin Crouch/tmp-'+ str(crouchCount) + '.gif')
+                            player2Image = pygame.transform.flip(player2Image,1,0)
+                            if crouch2Count < 2:
+                                crouch2Count += 1
+                    else:
+                        if punch2:
+                            crouch2Count = 0
+                            walk2Count = 0
+                            player2Image = pygame.image.load('Graphics/Cvs Jin Punch/tmp-'+ str(punchCount) + '.gif')
+                            player2Image = pygame.transform.flip(player2Image,1,0)
+                            if punch2Count < 5:
+                                punch2Count += 1
+                            else:
+                                punch2Count = 0
+                                punch2 = False
+                        elif kick2:
+                            crouch2Count = 0
+                            walk2Count = 0
+                            player2Image = pygame.image.load('Graphics/Cvs Jin Kick/tmp-'+ str(kickCount/2) + '.gif')
+                            player2Image = pygame.transform.flip(player2Image,1,0)
+                            if kick2Count < 6*2:
+                                kick2Count += 1
+                            else:
+                                kick2Count = 0
+                        # This '2'  |   was typed by Ian's little brother Martin Bantoto
+                        #           v
+                                kick2 = False
+                        elif move2Right:
+                            crouch2Count = 0
+                            player2Image = pygame.image.load('Graphics/Cvs Jin Walking Back/tmp-'+ str(walkCount) + '.gif')
+                            player2Image = pygame.transform.flip(player2Image,1,0)
+                            if walk2Count < 10:
+                                walk2Count += 1
+                            else:
+                                walk2Count = 0
+                        elif move2Left:
+                            crouch2Count = 0
+                            if walk2Count == 10:
+                                walk2Count = 9
+                            player2Image = pygame.image.load('Graphics/Cvs Jin Walking/tmp-'+ str(walkCount) + '.gif')
+                            player2Image = pygame.transform.flip(player2Image,1,0)
+                            if walk2Count < 9:
+                                walk2Count += 1
+                            else:
+                                walk2Count = 0
+                else:
+                    if move2Up:
+                        player2Image = pygame.image.load('Graphics/Cvs Jin Jump/tmp-'+ str(jumpCount/2) + '.gif')
+                        player2Image = pygame.transform.flip(player2Image,1,0)
+                        if jump2Count < 8:
+                            jump2Count += 1
+                        elif jump2Count > 8:
+                            jump2Count = 2
+                    else:
+                        player2Image = pygame.image.load('Graphics/Cvs Jin Jump/tmp-'+ str(jumpCount/2) + '.gif')
+                        player2Image = pygame.transform.flip(player2Image,1,0)
+                        if jump2Count < 21:
+                            jump2Count += 1
+                        
+                if player2.bottom == 700:
+                    player2Image = pygame.image.load('player2Right.png')
+                    
+            else:      # P1 face left, P2 face right
+                if player2.bottom >= 700:
+                    if jump2Count > 20 and jumpCount < 28:
+                        player2Image = pygame.image.load('Graphics/Cvs Jin Jump/tmp-'+ str(jumpCount/2) + '.gif')
+                        player2Image = pygame.transform.flip(player2Image,1,0)
+                        jump2Count += 1
+                    else:
+                        jumpCount = 3
+                    if not(moveLeft or moveRight or punch or kick):
+                        if not(crouching):
+                            crouchCount = 0
+                            playerImage = pygame.image.load('Graphics/Cvs Asuka Idle Stance Right/tmp-'+ str(idleCount/5) + '.gif')
+                            if idleCount != 36*5:
+                                idleCount += 1
+                            else:
+                                idleCount = 0
+                        else:
+                            playerImage = pygame.image.load('Graphics/Cvs Asuka Crouch Right/tmp-'+ str(crouchCount) + '.gif')
+                            if crouchCount < 2:
+                                crouchCount += 1
+                    else:
+                        if punch:
+                            crouchCount = 0
+                            walkCount = 0
+                            playerImage = pygame.image.load('Graphics/Cvs Asuka Punch Right/tmp-'+ str(punchCount) + '.gif')
+                            if punchCount < 5:
+                                punchCount += 1
+                            else:
+                                punchCount = 0
+                                punch = False
+                        elif kick:
+                            crouchCount = 0
+                            walkCount = 0
+                            playerImage = pygame.image.load('Graphics/Cvs Asuka Kick Right/tmp-'+ str(kickCount/2) + '.gif')
+                            if kickCount < 6*2:
+                                kickCount += 1
+                            else:
+                                kickCount = 0
+                                kick = False
+                        elif moveLeft:
+                            crouchCount = 0
+                            playerImage = pygame.image.load('Graphics/Cvs Asuka Walking Back Right/tmp-'+ str(walkCount) + '.gif')
+                            if walkCount < 10:
+                                walkCount += 1
+                            else:
+                                walkCount = 0
+                        elif moveRight:
+                            crouchCount = 0
+                            if walkCount == 10:
+                                walkCount = 9
+                            playerImage = pygame.image.load('Graphics/Cvs Asuka Walking Right/tmp-'+ str(walkCount) + '.gif')
+                            if walkCount < 9:
+                                walkCount += 1
+                            else:
+                                walkCount = 0
+                else:
+                    if moveUp:
+                        playerImage = pygame.image.load('Graphics/Cvs Asuka Jump Right/tmp-'+ str(jumpCount/2) + '.gif')
+                        if jumpCount < 8:
+                            jumpCount += 1
+                        elif jumpCount > 8:
+                            jumpCount = 2
+                    else:
+                        playerImage = pygame.image.load('Graphics/Cvs Asuka Jump Right/tmp-'+ str(jumpCount/2) + '.gif')
+                        if jumpCount < 21:
+                            jumpCount += 1

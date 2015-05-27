@@ -1,0 +1,21 @@
+/*
+ * @author: Basil
+ * Date Created: 2014-10-14
+ * Last Update: 2014-10-14
+ */
+
+import java.util.Scanner;
+
+public class Payroll {
+	
+	public static void main(String args[]) {
+		
+		String name = "";
+		int hours = 0;
+		int rate = 0;
+		
+		Scanner input = new Scanner(System.in);
+	}
+	
+	
+}

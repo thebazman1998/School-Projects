@@ -1,0 +1,107 @@
+import java.util.Random;
+import java.util.Scanner;
+
+public class Mastermind {
+	
+	public static void main(String args[]) {
+		
+		int[] code = new int[4];
+		Random random = new Random();
+		boolean cheat = false;
+		Scanner input = new Scanner(System.in);
+		String tempAnswer;
+		boolean human = true;
+		
+		System.out.print("Human or Computer Codebreaker?\n>");
+		tempAnswer = input.nextLine();
+		
+		if(tempAnswer.toLowerCase().equals("computer")) {
+			
+			human = false;
+		}
+		
+		if(human) {
+			
+			human(code, tempAnswer, input, cheat, random);
+		}else{
+			
+			computer();
+		}
+	}
+	
+	public static void human(int[] code, String tempAnswer, Scanner input, boolean cheat, Random random) {
+		
+		boolean finish = false;
+		int guess;
+		String guessStr;
+		int black = 0;
+		int white = 0;
+		int turns = 0;
+		
+		System.out.print("Turn cheat mode on?\n>");
+		
+		tempAnswer = input.nextLine();
+		
+		if(tempAnswer.toLowerCase().equals("yes")) {
+			
+			cheat = true;
+		}
+		
+		for(int i = 0; i < code.length; i++) {
+			
+			code[i] = random.nextInt(4) + 1;
+			
+			if(cheat = true) {
+
+					System.out.print(code[i]);
+			}
+		}
+		
+		while(finish = false) {
+			
+			System.out.print("\nWhat is your guess?\n>");
+			guess = input.nextInt();
+			guessStr = Integer.toString(guess);
+			
+			if(code[0] == guessStr.charAt(0) && code[1] == guessStr.charAt(1)
+					&& code[2] == guessStr.charAt(2) && code[3] == guessStr.charAt(3)) {
+				
+				finish = true;
+				break;
+			}
+			
+			if(finish = false) {
+				
+				for(int b = 0; b < 4; b++) {
+					
+					for(int c = 0; c< 4; c++) {
+						
+						if(code[b] == guessStr.charAt(b)) {
+							
+							black++;
+						} else {
+							
+							for(int f = 0; f < 4; f++) {
+								
+								if(code[b] == guessStr.charAt(f)) {
+									
+									white++;
+								}
+							}
+						}
+					}
+					
+					System.out.println(white + " White pins and " + black + " black pins.");
+				}
+				
+				turns++;
+			}
+		}
+		
+	System.out.println("You won in " + turns + " turns!");
+	}
+	
+	public static void computer() {
+		
+	}
+}

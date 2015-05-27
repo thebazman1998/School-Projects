@@ -1,0 +1,24 @@
+INSTUPBp_U1_Assignment7a_V1
+C:\Users\Basil\Dropbox\CompSci Programs\Bp_U2_Assignment7a\Bp_U1_Assignment7a_V1.py
+INFOS:&&2|1|2|0&&2|3|2|0&&2|4|2|0&&3|5|2|0&&3|6|2|0&&3|7|2|0&&3|8|2|0&&3|9|2|0&&3|10|2|0&&3|11|2|0&&3|12|2|0&&3|13|2|0&&3|14|2|0&&3|15|2|0&&3|16|2|0&&3|17|2|0&&3|18|2|0&&3|19|2|0&&3|20|2|0&&3|21|2|0&&3|6|2|0&&3|6|2|0&&3|6|2|0&&3|6|2|0&&3|6|2|0&&3|6|2|0&&3|6|2|0&&3|6|2|0&&3|6|2|0&&3|6|2|0&&3|7|2|0&&3|7|2|0&&3|16|2|0
+mainClock=5
+NEWFOOD=17
+UPRIGHT=14
+doRectsOverlap=3
+DOWNLEFT=11
+foodCounter=16
+Bp_U1_Assignment7a_V1=2
+bouncer=19
+rand_color=1
+MOVESPEED=15
+DOWNRIGHT=12
+WINDOWWIDTH=8
+pause=7
+tick=6
+foods=21
+bouncer2=20
+FOODSIZE=18
+isPointInsideRect=4
+WINDOWHEIGHT=9
+windowSurface=10
+UPLEFT=13

@@ -1,0 +1,51 @@
+public class encrypt {
+
+	public static void main(String args[]) {
+		
+		//Define Variables
+		String message = "Hello";
+		String encryptor = "1";
+		
+		int[] messageArrayInt;
+		
+		int messageLength = message.length();
+		int encryptorLength = encryptor.length();
+		
+		messageArrayInt = new int[messageLength];
+		
+		
+		int messageArraySelector;
+		
+		//Turn the message String into an Array
+		for(messageArraySelector = 0; messageArraySelector < messageLength; messageArraySelector++) {
+			
+			messageArrayInt[messageArraySelector] = message.charAt(messageArraySelector);
+		}
+		
+		int messageSelector;
+		int encryptorSelector;
+		
+		for(encryptorSelector = 0; encryptorSelector < encryptorLength; encryptorSelector++) {
+			
+			//If using encryption 1
+			if(encryptor.substring(encryptorSelector, encryptorSelector + 1).equals("1")) {
+				
+				//Scroll through the characters in the message
+				for(messageSelector = 0; messageSelector < messageLength; messageSelector++) {
+					
+					//Encrypt the character
+					messageArrayInt[messageSelector] = encryption1(messageArrayInt[messageSelector]);
+				}
+			}
+		}
+		
+		System.out.println(messageArrayInt[]);
+	}
+	
+	public static int encryption1(int messagePart) {
+		
+		int answer = messagePart + 8;
+		
+		return(answer);
+	}
+}

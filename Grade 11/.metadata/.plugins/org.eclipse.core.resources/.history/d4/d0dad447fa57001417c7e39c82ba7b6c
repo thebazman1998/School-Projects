@@ -1,0 +1,17 @@
+public class Test {
+	
+	public static void main(String args[]) {
+		
+		long time = System.currentTimeMillis();
+		
+		System.out.println(time);
+		
+		int timeint = (int)time;
+		
+		System.out.println(timeint);
+		
+		int timefinal = timeint / 100;
+		
+		System.out.println(timefinal);
+	}
+}

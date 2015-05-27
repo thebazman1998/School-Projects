@@ -1,0 +1,9 @@
+
+public class Tester {
+	
+	public static void main(String[] args){
+		
+		System.out.println("79 + 3 * (4 + 82 - 68) - 7 + 19 = " + 79 + 19 * (4 + 82 - 68) + 3 + (-7));
+	}
+
+}

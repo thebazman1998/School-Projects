@@ -1,0 +1,65 @@
+"""
+Name: Basil
+Class: ICS201-01
+Date: 19/02/14
+Assignment 7
+"""
+
+def compare(x, y):
+    if x < y:
+        print x, "is less than", y
+        
+    elif x > y:
+        print x, "is greater than", y
+        
+    else:
+        print x, "and", y, "are equal"
+
+################################################################################
+
+def isVowel(character):
+    character = character.lower()
+    if character == "a" or character == "e" or character == "i" or character == "o" or character == "u":
+        print character, "is a vowel"
+    elif character == "y" or character == "Y":
+        print character, "is sometimes a vowel"
+    else:
+        print character, "is a consonant"
+
+################################################################################
+
+def isDivisibleBy3(n):
+    if n % 3 == 0:
+        print n,"is divisible by 3"
+    else:
+        print n, "is not divisible by 3"
+
+################################################################################
+
+def weight_class(n):
+    if n > 205 and n < 266:
+        return n, "Is Heavyweight"
+    elif n > 185 and n < 205:
+        return n, "Is Light Heavyweight"
+    elif n > 170 and n < 185:
+        return n, "Is Middleweight"
+    elif n > 155 and n < 170:
+        return n, "Is Welterweight"
+    elif n > 145 and n < 154:
+        return n, "Is Lightweight"
+
+################################################################################
+
+def welcomeScreen():
+    play = raw_input("Would you like to play?").lower()
+    if play == "yes" or play == "yup" or play == "sure" or play == "y" or play =="ok":
+        return "Welcome to 'The Game' \n Good Luck"
+    else:
+        return "Thank you for playing"
+
+print welcomeScreen()
+
+################################################################################
+
+def isDigit(n):
+    if n > or n == 0
